@@ -50,8 +50,6 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 <details>
 <summary><b>Docker의 근본 원리를 완전히 이해하기 (7개 챕터)</b></summary>
 
-<br/>
-
 |                            주제                             | 핵심 내용 | 난이도 |
 |:-----------------------------------------------------------:|----------|--------|
 |       **[01. Container vs VM](./fundamentals/01-Container-vs-VM.md)**        | 컨테이너와 VM의 근본적 차이, 성능 비교 실험 | ⭐ |
@@ -64,14 +62,10 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 
 </details>
 
-<br/>
-
 ### 🔹 Images - 이미지 심화
 
 <details>
 <summary><b>효율적이고 안전한 이미지 빌드 (7개 챕터)</b></summary>
-
-<br/>
 
 |                      주제                      | 핵심 내용 | 학습 포인트 |
 |:----------------------------------------------:|----------|-----------|
@@ -85,14 +79,10 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 
 </details>
 
-<br/>
-
 ### 🔹 Networking - 네트워킹 완전 정복
 
 <details>
 <summary><b>컨테이너 네트워킹의 모든 것 (9개 챕터)</b></summary>
-
-<br/>
 
 |                       주제                        | 핵심 내용 |
 |:-------------------------------------------------:|----------|
@@ -107,14 +97,11 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 | **[09. Network Security](./networking/09-Network-Security.md)** | 네트워크 정책, 방화벽, 암호화 |
 
 </details>
-<br/>
 
 ### 🔹 Storage - 스토리지 & 데이터 관리
 
 <details>
 <summary><b>영속적 데이터 관리 전략 (7개 챕터)</b></summary>
-
-<br/>
 
 |                    주제                     | 핵심 내용 |
 |:-------------------------------------------:|----------|
@@ -127,14 +114,11 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 | **[07. Backup & Restore](./storage/07-Backup-Restore.md)** | 백업 자동화, 재해 복구 |
 
 </details>
-<br/>
 
 ### 🔹 Orchestration - 오케스트레이션
 
 <details>
 <summary><b>컨테이너 편성과 관리 (7개 챕터)</b></summary>
-
-<br/>
 
 |                        주제                         | 핵심 내용 |
 |:---------------------------------------------------:|----------|
@@ -147,14 +131,11 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 | **[07. High Availability](./orchestration/07-High-Availability.md)** | 고가용성 아키텍처, 장애 복구 |
 
 </details>
-<br/>
 
 ### 🔹 Security - 보안 강화
 
 <details>
 <summary><b>프로덕션 보안 베스트 프랙티스 (8개 챕터)</b></summary>
-
-<br/>
 
 |                          주제                           | 핵심 내용 |
 |:-------------------------------------------------------:|----------|
@@ -168,14 +149,11 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 | **[08. Compliance](./security/08-Compliance.md)** | CIS 벤치마크, PCI-DSS, HIPAA |
 
 </details>
-<br/>
 
 ### 🔹 Performance - 성능 최적화
 
 <details>
 <summary><b>컨테이너 성능 극대화 (8개 챕터)</b></summary>
-
-<br/>
 
 |                       주제                        | 핵심 내용 |
 |:-------------------------------------------------:|----------|
@@ -189,14 +167,11 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 | **[08. Benchmarking](./performance/08-Benchmarking.md)** | 성능 테스트 방법론 |
 
 </details>
-<br/>
 
 ### 🔹 Advanced - 고급 주제
 
 <details>
 <summary><b>Docker 내부 깊숙이 (8개 챕터)</b></summary>
-
-<br/>
 
 |                     주제                      | 핵심 내용 |
 |:---------------------------------------------:|----------|
@@ -210,14 +185,11 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 | **[08. Docker Extensions](./advanced/08-Docker-Extensions.md)** | Docker Desktop 확장 |
 
 </details>
-<br/>
 
 ### 🔹 Patterns - 실전 패턴
 
 <details>
 <summary><b>프로덕션 검증된 디자인 패턴 (8개 챕터)</b></summary>
-
-<br/>
 
 |                         주제                          | 핵심 내용 |
 |:-----------------------------------------------------:|----------|
@@ -231,14 +203,11 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 | **[08. Configuration Management](./patterns/08-Configuration-Management.md)** | 설정 관리 베스트 프랙티스 |
 
 </details>
-<br/>
 
 ### 🔹 CI/CD - 지속적 통합/배포
 
 <details>
 <summary><b>Docker 기반 CI/CD 파이프라인 (7개 챕터)</b></summary>
-
-<br/>
 
 |                        주제                         | 핵심 내용 |
 |:---------------------------------------------------:|----------|
@@ -251,14 +220,11 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 | **[07. Deployment Strategies](./cicd/07-Deployment-Strategies.md)** | Blue/Green, Canary |
 
 </details>
-<br/>
 
 ### 🔹 Debugging - 디버깅 & 트러블슈팅
 
 <details>
 <summary><b>실전 문제 해결 가이드 (6개 챕터)</b></summary>
-
-<br/>
 
 |                         주제                          | 핵심 내용 |
 |:-----------------------------------------------------:|----------|
@@ -270,14 +236,11 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 | **[06. Diagnostic Tools](./debugging/06-Diagnostic-Tools.md)** | 진단 도구 모음 |
 
 </details>
-<br/>
 
 ### 🔹 Real World - 실전 프로젝트
 
 <details>
 <summary><b>실무 프로젝트 완전 구현 (7개 챕터)</b></summary>
-
-<br/>
 
 |                        주제                         | 핵심 내용 |
 |:---------------------------------------------------:|----------|
@@ -290,14 +253,11 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 | **[07. Multi-Tier App](./real-world/07-Multi-Tier-App.md)** | 다층 아키텍처 구현 |
 
 </details>
-<br/>
 
 ### 🔹 Kubernetes Bridge - K8s로의 전환
 
 <details>
 <summary><b>Docker에서 Kubernetes로 (4개 챕터)</b></summary>
-
-<br/>
 
 |                          주제                           | 핵심 내용 |
 |:-------------------------------------------------------:|----------|
