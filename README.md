@@ -50,15 +50,15 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 <details>
 <summary><b>Docker의 근본 원리를 완전히 이해하기 (7개 챕터)</b></summary>
 
-|                            주제                             | 핵심 내용 | 난이도 |
-|:-----------------------------------------------------------:|----------|--------|
-|       **[01. Container vs VM](./fundamentals/01-Container-vs-VM.md)**        | 컨테이너와 VM의 근본적 차이, 성능 비교 실험 | ⭐ |
-|   **[02. Docker Architecture](./fundamentals/02-Docker-Architecture.md)**   | dockerd, containerd, runc 구조, 컴포넌트 통신 흐름 | ⭐⭐ |
-|         **[03. Image Layers](./fundamentals/03-Image-Layers.md)**          | 레이어 시스템, Copy-on-Write, 캐싱 전략 | ⭐⭐ |
-|       **[04. Union Filesystem](./fundamentals/04-Union-Filesystem.md)**        | OverlayFS 동작 원리, 스토리지 드라이버 비교 | ⭐⭐⭐ |
-|      **[05. Namespaces](./fundamentals/05-Namespaces.md)**      | 7가지 Namespace, 격리 메커니즘, 실전 활용 | ⭐⭐⭐ |
-|        **[06. Cgroups](./fundamentals/06-Cgroups.md)**       | CPU/메모리/I/O 제한, OOM Killer, 리소스 관리 | ⭐⭐⭐ |
-| **[07. Docker Engine](./fundamentals/07-Docker-Engine.md)** | 이벤트 시스템, 플러그인, Engine API | ⭐⭐⭐ |
+|                            주제                             | 핵심 내용 |
+|:-----------------------------------------------------------:|----------|
+|       **[01. Container vs VM](./fundamentals/01-Container-vs-VM.md)**        | 컨테이너와 VM의 근본적 차이, 성능 비교 실험 |
+|   **[02. Docker Architecture](./fundamentals/02-Docker-Architecture.md)**   | dockerd, containerd, runc 구조, 컴포넌트 통신 흐름 |
+|         **[03. Image Layers](./fundamentals/03-Image-Layers.md)**          | 레이어 시스템, Copy-on-Write, 캐싱 전략 |
+|       **[04. Union Filesystem](./fundamentals/04-Union-Filesystem.md)**        | OverlayFS 동작 원리, 스토리지 드라이버 비교 |
+|      **[05. Namespaces](./fundamentals/05-Namespaces.md)**      | 7가지 Namespace, 격리 메커니즘, 실전 활용 |
+|        **[06. Cgroups](./fundamentals/06-Cgroups.md)**       | CPU/메모리/I/O 제한, OOM Killer, 리소스 관리 |
+| **[07. Docker Engine](./fundamentals/07-Docker-Engine.md)** | 이벤트 시스템, 플러그인, Engine API |
 
 </details>
 
@@ -67,15 +67,15 @@ Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도�
 <details>
 <summary><b>효율적이고 안전한 이미지 빌드 (7개 챕터)</b></summary>
 
-|                      주제                      | 핵심 내용 | 학습 포인트 |
-|:----------------------------------------------:|----------|-----------|
-|   **[01. Dockerfile Best Practices](./images/01-Dockerfile-Best-Practices.md)**   | 레이어 최적화, 빌드 컨텍스트, 캐시 활용 | 빌드 시간 10배 단축 |
-| **[02. Multi-Stage Builds](./images/02-Multi-Stage-Builds.md)** | 빌드/실행 분리, 이미지 크기 최소화 | 크기 5배 감소 |
-| **[03. Image Optimization](./images/03-Image-Optimization.md)** | Alpine vs Distroless, 불필요한 파일 제거 | 프로덕션 최적화 |
-| **[04. Cache Mechanism](./images/04-Cache-Mechanism.md)** | 빌드 캐시 동작, 무효화 조건, 원격 캐시 | CI/CD 가속화 |
-|    **[05. BuildKit](./images/05-BuildKit.md)**    | 병렬 빌드, Secrets, SSH 마운트 | 차세대 빌드 엔진 |
-| **[06. Image Security](./images/06-Image-Security.md)** | 취약점 스캔, 서명, 최소 권한 | 보안 강화 |
-| **[07. Custom Base Images](./images/07-Custom-Base-Images.md)** | scratch부터 시작, 맞춤형 베이스 제작 | 완전 제어 |
+|                      주제                      | 핵심 내용 |
+|:----------------------------------------------:|----------|
+|   **[01. Dockerfile Best Practices](./images/01-Dockerfile-Best-Practices.md)**   | 레이어 최적화, 빌드 컨텍스트, 캐시 활용 |
+| **[02. Multi-Stage Builds](./images/02-Multi-Stage-Builds.md)** | 빌드/실행 분리, 이미지 크기 최소화 |
+| **[03. Image Optimization](./images/03-Image-Optimization.md)** | Alpine vs Distroless, 불필요한 파일 제거 |
+| **[04. Cache Mechanism](./images/04-Cache-Mechanism.md)** | 빌드 캐시 동작, 무효화 조건, 원격 캐시 |
+|    **[05. BuildKit](./images/05-BuildKit.md)**    | 병렬 빌드, Secrets, SSH 마운트 |
+| **[06. Image Security](./images/06-Image-Security.md)** | 취약점 스캔, 서명, 최소 권한 |
+| **[07. Custom Base Images](./images/07-Custom-Base-Images.md)** | scratch부터 시작, 맞춤형 베이스 제작 |
 
 </details>
 
@@ -469,22 +469,22 @@ Fundamentals (필수)
 ### ✅ 효과적인 학습 전략
 
 1. **순서대로 학습**
-    - Fundamentals는 반드시 순서대로
-    - 다른 섹션은 필요에 따라 선택
+   - Fundamentals는 반드시 순서대로
+   - 다른 섹션은 필요에 따라 선택
 
 2. **실습 필수**
-    - 모든 명령어를 직접 실행
-    - 결과를 눈으로 확인
-    - 변형해서 실험
+   - 모든 명령어를 직접 실행
+   - 결과를 눈으로 확인
+   - 변형해서 실험
 
 3. **메모하기**
-    - 이해 안 되는 부분 표시
-    - 나중에 다시 학습
-    - 자신만의 정리 노트 작성
+   - 이해 안 되는 부분 표시
+   - 나중에 다시 학습
+   - 자신만의 정리 노트 작성
 
 4. **프로젝트 적용**
-    - 학습한 내용을 실제 프로젝트에 적용
-    - 문제 발생 시 Debugging 섹션 참고
+   - 학습한 내용을 실제 프로젝트에 적용
+   - 문제 발생 시 Debugging 섹션 참고
 
 ### ⚠️ 주의사항
 
