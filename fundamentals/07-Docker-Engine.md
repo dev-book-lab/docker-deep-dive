@@ -872,10 +872,9 @@ docker buildx build --platform linux/amd64,linux/arm64 -t myapp .
 
 Docker Engine을 마스터했습니다! 다음 챕터:
 
-- **[../images/01-Dockerfile-Best-Practices.md](../images/01-Dockerfile-Best-Practices.md)**: 이미지 최적화 심화
-- **[../networking/01-Network-Fundamentals.md](../networking/01-Network-Fundamentals.md)**: 네트워킹 완전 정복
-- **[../performance/01-Resource-Limits.md](../performance/01-Resource-Limits.md)**: 성능 최적화
-
+- **[images/01-Dockerfile-Best-Practices.md](../images/01-Dockerfile-Best-Practices.md)**: 이미지 최적화 심화
+- **[networking/01-Network-Fundamentals.md](../networking/01-Network-Fundamentals.md)**: 네트워킹 완전 정복
+- **[performance/01-Resource-Limits.md](../performance/01-Resource-Limits.md)**: 성능 최적화
 ---
 
 ## 📚 참고 자료
