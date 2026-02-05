@@ -24,7 +24,7 @@ Namespaces, Cgroups, Union Filesystem부터 네트워킹, 보안, 성능까지
 
 ## 🎯 이 프로젝트에 대하여
 
-Docker를 "그냥 쓰는 것"에서 **"완전히 이해하는 것"**으로 도약하기 위한 심화 학습 자료입니다.
+Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도약하기 위한 심화 학습 자료입니다.
 
 ### ✨ 특징
 
@@ -307,6 +307,7 @@ Docker를 "그냥 쓰는 것"에서 **"완전히 이해하는 것"**으로 도�
 | **[04. Migration Guide](./kubernetes-bridge/04-Migration-Guide.md)** | 마이그레이션 전략 |
 
 </details>
+
 ---
 
 ## 🗺️ 학습 로드맵
@@ -616,17 +617,17 @@ git push origin feature/AmazingContent
 
 ### 🥇 1단계: 필수 기초 (2-4주)
 ```
-Fundamentals 전체 → Images 01-03 → Networking 01-02
+Fundamentals → Images → Networking
 ```
 
 ### 🥈 2단계: 실전 적용 (2-4주)
 ```
-Storage 01-03 → Orchestration 01 → Real World 01-03
+Storage → Orchestration → Real World
 ```
 
 ### 🥉 3단계: 심화 학습 (1-2개월)
 ```
-Security 전체 → Performance 전체 → Advanced 01-04
+Security → Performance → Advanced
 ```
 
 ### 🏆 4단계: 마스터 (진행형)
