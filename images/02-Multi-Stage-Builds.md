@@ -819,16 +819,6 @@ COPY --from=builder /app/binary ./binary
 
 ---
 
-## 🔗 다음 단계
-
-멀티 스테이지 빌드를 마스터했습니다! 다음 챕터:
-
-- **[03. Image Optimization](./03-Image-Optimization.md)**: 이미지 크기 극한 최적화
-- **[04. Cache Mechanism](./04-Cache-Mechanism.md)**: 빌드 캐시 시스템
-- **[05. BuildKit](./05-BuildKit.md)**: 차세대 빌드 엔진
-
----
-
 ## 📚 참고 자료
 
 - [Multi-stage Builds](https://docs.docker.com/build/building/multi-stage/)
@@ -844,3 +834,11 @@ COPY --from=builder /app/binary ./binary
 3. 테스트 스테이지를 언제 사용해야 할까?
 
 > 💡 **답변**: 1) 최종 스테이지에 불필요한 파일 포함, 2) 정적링크/최소런타임/보안중시, 3) CI/CD에서 빌드 전 검증
+
+---
+
+<div align="center">
+
+**[⬅️ 이전: Dockerfile Best Practices](./01-Dockerfile-Best-Practices.md)** | **[다음: Image Optimization ➡️](./03-Image-Optimization.md)**
+
+</div>

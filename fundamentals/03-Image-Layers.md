@@ -826,16 +826,6 @@ RUN sed 's/old/new/g' /tmp/large-db.sql > /data/large-db.sql
 
 ---
 
-## 🔗 다음 단계
-
-레이어 시스템을 마스터했습니다! 다음 챕터:
-
-- **[04. Union Filesystem](./04-Union-Filesystem.md)**: OverlayFS 동작 원리
-- **[images/01-Dockerfile-Best-Practices](../images/01-Dockerfile-Best-Practices.md)**: Dockerfile 최적화
-- **[images/03-Image-Optimization](../images/03-Image-Optimization.md)**: 이미지 최적화 심화
-
----
-
 ## 📚 참고 자료
 
 - [Docker Image Specification](https://github.com/moby/moby/blob/master/image/spec/v1.2.md)
@@ -852,3 +842,11 @@ RUN sed 's/old/new/g' /tmp/large-db.sql > /data/large-db.sql
 3. 멀티 스테이지 빌드에서 중간 스테이지는 최종 이미지 크기에 영향을 줄까?
 
 > 💡 **답변**: 1) 전자 (캐시 문제 방지), 2) 불필요한 파일 복사 방지 → 빌드 컨텍스트 감소, 3) 아니오 (최종 스테이지만 포함)
+
+---
+
+<div align="center">
+
+**[⬅️ 이전: Docker Architecture](./02-Docker-Architecture.md)** | **[다음: Union Filesystem ➡️](./04-Union-Filesystem.md)**
+
+</div>

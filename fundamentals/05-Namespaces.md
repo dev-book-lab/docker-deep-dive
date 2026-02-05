@@ -829,16 +829,6 @@ docker run --pid=host --net=host --privileged myapp
 
 ---
 
-## 🔗 다음 단계
-
-Namespace를 마스터했습니다! 다음 챕터:
-
-- **[06. Cgroups](06-Cgroups.md)**: 리소스 제한 메커니즘
-- **[security/03-Runtime-Security](../security/03-Runtime-Security.md)**: 런타임 보안
-- **[networking/01-Network-Fundamentals](../networking/01-Network-Fundamentals.md)**: 네트워크 심화
-
----
-
 ## 📚 참고 자료
 
 - [Linux Namespaces man page](https://man7.org/linux/man-pages/man7/namespaces.7.html)
@@ -855,3 +845,11 @@ Namespace를 마스터했습니다! 다음 챕터:
 3. Kubernetes Pod 내 컨테이너들은 어떤 Namespace를 공유할까?
 
 > 💡 **답변**: 1) 아니오 (호스트 프로세스 종료 가능), 2) UID 매핑 때문, 3) Network, IPC, UTS (PID는 옵션)
+
+---
+
+<div align="center">
+
+**[⬅️ 이전: Union Filesystem](./04-Union-Filesystem.md)** | **[다음: Cgroups ➡️](./06-Cgroups.md)**
+
+</div>

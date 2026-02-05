@@ -851,16 +851,6 @@ Docker CLI ←(REST/HTTP)→ dockerd ←(gRPC)→ containerd ←(exec)→ runc
 
 ---
 
-## 🔗 다음 단계
-
-이제 Docker의 내부 구조를 이해했습니다. 다음 챕터에서는:
-
-- **[03. Image Layers](./03-Image-Layers.md)**: 이미지 레이어 시스템
-- **[04. Union Filesystem](./04-Union-Filesystem.md)**: OverlayFS 동작 원리
-- **[07. Docker Engine](./07-Docker-Engine.md)**: 엔진 상세 분석
-
----
-
 ## 📚 참고 자료
 
 - [Docker Architecture](https://docs.docker.com/get-started/overview/#docker-architecture)
@@ -878,3 +868,11 @@ Docker CLI ←(REST/HTTP)→ dockerd ←(gRPC)→ containerd ←(exec)→ runc
 3. Podman은 데몬이 없다는데, 어떻게 가능할까?
 
 > 💡 **힌트**: 모두 "레이어 분리"와 "표준화"가 핵심입니다.
+
+---
+
+<div align="center">
+
+**[⬅️ 이전: Container vs VM](./01-Container-vs-VM.md)** | **[다음: Image Layers ➡️](./03-Image-Layers.md)**
+
+</div>

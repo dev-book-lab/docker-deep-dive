@@ -784,16 +784,6 @@ FROM node:18-alpine
 
 ---
 
-## 🔗 다음 단계
-
-Dockerfile 최적화를 마스터했습니다! 다음 챕터:
-
-- **[02. Multi-Stage Builds](./02-Multi-Stage-Builds.md)**: 빌드/실행 환경 분리
-- **[03. Image Optimization](./03-Image-Optimization.md)**: 이미지 크기 극한 최적화
-- **[04. Cache Mechanism](./04-Cache-Mechanism.md)**: 캐시 시스템 심화
-
----
-
 ## 📚 참고 자료
 
 - [Dockerfile Best Practices](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
@@ -810,3 +800,11 @@ Dockerfile 최적화를 마스터했습니다! 다음 챕터:
 3. ARG와 ENV의 차이가 중요한 이유는?
 
 > 💡 **답변**: 1) 소스 변경 시마다 모든 레이어 재빌드, 2) 상황에 따라 (호환성 vs 크기), 3) 빌드 타임 vs 런타임 보안
+
+---
+
+<div align="center">
+
+**[⬅️ 이전 섹션: Fundamentals](../fundamentals/07-Docker-Engine.md)** | **[다음: Multi-Stage Builds ➡️](./02-Multi-Stage-Builds.md)**
+
+</div>

@@ -751,16 +751,6 @@ docker run -d \
 
 ---
 
-## 🔗 다음 단계
-
-Cgroups를 마스터했습니다! 다음 챕터:
-
-- **[07. Docker Engine](07-Docker-Engine.md)**: 엔진 내부 동작
-- **[performance/01-Resource-Limits](../performance/01-Resource-Limits.md)**: 성능 최적화
-- **[performance/05-Monitoring](../performance/05-Monitoring.md)**: 모니터링 심화
-
----
-
 ## 📚 참고 자료
 
 - [Linux Control Groups](https://www.kernel.org/doc/html/latest/admin-guide/cgroup-v2.html)
@@ -777,3 +767,11 @@ Cgroups를 마스터했습니다! 다음 챕터:
 3. Kubernetes에서 `requests`와 `limits`는 Cgroups의 어떤 기능을 사용할까?
 
 > 💡 **답변**: 1) 절대/상대 제한, 2) 아니오 (Swap 가능, soft limit), 3) requests=reservation, limits=limit
+
+---
+
+<div align="center">
+
+**[⬅️ 이전: Namespaces](./05-Namespaces.md)** | **[다음: Docker Engine ➡️](./07-Docker-Engine.md)**
+
+</div>

@@ -868,15 +868,6 @@ docker buildx build --platform linux/amd64,linux/arm64 -t myapp .
 
 ---
 
-## 🔗 다음 단계
-
-Docker Engine을 마스터했습니다! 다음 챕터:
-
-- **[images/01-Dockerfile-Best-Practices.md](../images/01-Dockerfile-Best-Practices.md)**: 이미지 최적화 심화
-- **[networking/01-Network-Fundamentals.md](../networking/01-Network-Fundamentals.md)**: 네트워킹 완전 정복
-- **[performance/01-Resource-Limits.md](../performance/01-Resource-Limits.md)**: 성능 최적화
----
-
 ## 📚 참고 자료
 
 - [Docker Engine API](https://docs.docker.com/engine/api/)
@@ -893,3 +884,11 @@ Docker Engine을 마스터했습니다! 다음 챕터:
 3. Kubernetes는 Docker Engine의 어떤 부분을 사용할까?
 
 > 💡 **답변**: 1) API가 더 직접적, CLI는 편의성 제공, 2) 실시간성(장점) vs 부하(단점), 3) containerd 직접 사용 (Docker Engine 우회)
+
+---
+
+<div align="center">
+
+**[⬅️ 이전: Cgroups](./06-Cgroups.md)** | **[다음 섹션: Images ➡️](../images/01-Dockerfile-Best-Practices.md)**
+
+</div>

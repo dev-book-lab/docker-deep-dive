@@ -781,16 +781,6 @@ RUN apk add --no-cache \
 
 ---
 
-## 🔗 다음 단계
-
-Union Filesystem을 마스터했습니다! 다음 챕터:
-
-- **[05. Namespaces](./05-Namespaces.md)**: 격리 메커니즘 심화
-- **[06. Cgroups](./06-Cgroups.md)**: 리소스 제한
-- **[storage/01-Volume-Types](../storage/01-Volume-Types.md)**: 데이터 영속성
-
----
-
 ## 📚 참고 자료
 
 - [OverlayFS Documentation](https://www.kernel.org/doc/html/latest/filesystems/overlayfs.html)
@@ -807,3 +797,11 @@ Union Filesystem을 마스터했습니다! 다음 챕터:
 3. Kubernetes에서 컨테이너 간 파일 공유가 안 되는 이유는?
 
 > 💡 **답변**: 1) 1개 (Upper Layer에만), 2) 커널 메인라인 포함 + 성능, 3) 각 컨테이너는 독립 Union Mount
+
+---
+
+<div align="center">
+
+**[⬅️ 이전: Image Layers](./03-Image-Layers.md)** | **[다음: Namespaces ➡️](./05-Namespaces.md)**
+
+</div>
