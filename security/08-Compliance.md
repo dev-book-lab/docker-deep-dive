@@ -1176,6 +1176,26 @@ soc2-audit:
 
 ---
 
+## 📚 참고 자료
+
+- [CIS Docker Benchmark](https://www.cisecurity.org/benchmark/docker)
+- [PCI DSS Requirements](https://www.pcisecuritystandards.org/)
+- [HIPAA Security Rule](https://www.hhs.gov/hipaa/for-professionals/security/index.html)
+- [SOC 2 Framework](https://www.aicpa.org/interestareas/frc/assuranceadvisoryservices/aicpasoc2report.html)
+- [NIST Cybersecurity Framework](https://www.nist.gov/cyberframework)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. CIS Benchmark를 100% 준수하는 것이 실무에서 현실적일까?
+2. 컴플라이언스 인증을 받으면 실제로 보안이 강화될까, 아니면 서류상 준수일 뿐일까?
+3. Docker Swarm 환경에서 PCI DSS를 준수하려면 어떤 추가 조치가 필요할까?
+
+> 💡 **답변**: 1) 비현실적인 경우 많음 - CIS Level 1: 현실적, 대부분 적용 가능, Level 2: 매우 엄격, 일부 항목은 트레이드오프 필요, 예: "5.28 - PIDs cgroup 제한" → 레거시 앱은 PID 많이 사용, 실무 접근: 리스크 기반 우선순위, 핵심 항목(1-20번) 먼저, 비즈니스 영향 평가, 예외 문서화, 점진적 개선(80% → 90% → 95%), 100%보다 지속 가능성이 중요, 2) 둘 다 가능 - Checkbox 컴플라이언스(나쁜 예): 감사 통과만 목표, 최소 기준만 충족, 인증 후 방치, 실제 보안 개선 없음, 진정한 컴플라이언스(좋은 예): 보안 문화 정착, 지속적 모니터링, 자동화된 검증, 정기 개선, 인증은 부산물, 핵심: 도구(InSpec, OpenSCAP)로 자동화 → 매일 검증 → 지속적 컴플라이언스, 3) 추가 조치: 네트워크 분리(PCI zone 전용 overlay), 카드 데이터 암호화(TLS + at-rest encryption), 접근 제어(mTLS, RBAC), 로깅(모든 접근 기록, Splunk/ELK), 취약점 스캔(분기별 ASV 스캔), 침투 테스트(연간), IDS/IPS(Falco), Secrets 관리(Vault), 정기 감사, 실무: Kubernetes가 PCI DSS 더 적합(네이티브 RBAC, Network Policy, Pod Security)
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Security Scanning Tools](./07-Security-Scanning-Tools.md)** | **[홈으로 🏠](../README.md)**

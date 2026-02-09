@@ -1413,8 +1413,28 @@ docker info
 
 ---
 
+## 📚 참고 자료
+
+- [Docker Security](https://docs.docker.com/engine/security/)
+- [Docker Security Best Practices](https://cheatsheetseries.owasp.org/cheatsheets/Docker_Security_Cheat_Sheet.html)
+- [CIS Docker Benchmark](https://www.cisecurity.org/benchmark/docker)
+- [Linux Capabilities](https://man7.org/linux/man-pages/man7/capabilities.7.html)
+- [Seccomp Security Profiles](https://docs.docker.com/engine/security/seccomp/)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. Privileged 모드는 왜 위험한가? 어떤 상황에서만 사용해야 할까?
+2. Root 사용자로 컨테이너를 실행하는 것과 호스트 Root가 같은 권한일까?
+3. Defense in Depth 전략에서 한 계층이 뚫렸을 때 다른 계층은 어떻게 방어할까?
+
+> 💡 **답변**: 1) Privileged 모드는 모든 Capabilities 부여 + Host 디바이스 접근 + Seccomp/AppArmor 비활성화, 컨테이너에서 커널 모듈 로드 가능, 호스트 탈출 매우 쉬움, 사용 케이스: Docker-in-Docker, 특수 하드웨어 접근(GPU, USB), 네트워크 관리 도구, 그 외에는 절대 사용 금지, 대안: 필요한 Capability만 추가(--cap-add), 디바이스만 마운트(--device), 2) 다름 - 컨테이너 Root(UID 0)는 Host에서 Root로 매핑되지만 Capabilities 제한됨(기본 14개만), User Namespace 사용 시 Host에서는 일반 사용자로 매핑(예: UID 100000), 완전한 Root 권한 없음(CAP_SYS_ADMIN 등 제거됨), 하지만 여전히 위험(권한 상승 취약점), 비특권 사용자(--user 1000) 권장, 3) 예시 시나리오: 애플리케이션 취약점 → SQL Injection → 컨테이너 쉘 획득 → Read-only FS로 악성 바이너리 설치 불가 → Seccomp으로 위험한 시스템콜 차단 → User Namespace로 호스트 파일 접근 불가 → AppArmor로 특정 경로만 접근 허용, 각 계층이 독립적으로 방어
+
+---
+
 <div align="center">
 
-**[다음: Image Security ➡️](./02-Image-Security.md)**
+**[다음: Image Scanning ➡️](./02-Image-Scanning.md)**
 
 </div>

@@ -1730,6 +1730,26 @@ INFO: 주간 리포트
 
 ---
 
+## 📚 참고 자료
+
+- [Docker Security - Runtime Security](https://docs.docker.com/engine/security/)
+- [Falco Documentation](https://falco.org/docs/)
+- [Linux Cgroups](https://www.kernel.org/doc/Documentation/cgroup-v2.txt)
+- [OOM Killer](https://www.kernel.org/doc/gorman/html/understand/understand016.html)
+- [PID Namespace](https://man7.org/linux/man-pages/man7/pid_namespaces.7.html)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. 메모리 제한을 설정했는데도 호스트가 OOM으로 죽을 수 있을까?
+2. Falco는 어떻게 컨테이너 내부 활동을 모니터링할 수 있을까?
+3. CPU 제한과 CPU 예약의 차이는 무엇이고, 각각 언제 사용해야 할까?
+
+> 💡 **답변**: 1) 가능 - 메모리 제한(`--memory`)은 컨테이너만 해당, 컨테이너가 메모리 제한 초과 시 해당 컨테이너만 OOM Kill, 하지만 호스트 전체 메모리 고갈은 다른 문제: 여러 컨테이너 합계가 호스트 메모리 초과, Kernel 메모리(Page cache, Buffer) 고갈, Swap 미설정 시 호스트 OOM, 해결: 호스트 메모리의 80% 이하로 컨테이너 할당, `--oom-kill-disable` 절대 사용 금지, Swap 설정 + 모니터링, 2) Falco는 eBPF/Kernel module로 시스템콜을 hook: Container namespace 경계 넘어 모든 syscall 감지, /proc 파일시스템으로 컨테이너 메타데이터 읽기, cgroup 정보로 어느 컨테이너인지 식별, ptrace 없이 성능 영향 최소, 3) CPU 제한(`--cpus 1.5`): 최대 사용 가능 CPU, 초과 시 throttling(제한), Hard limit, 보장 없음, CPU 예약(`--cpu-shares 1024`): 상대적 가중치, 경쟁 시에만 적용, Soft limit, 최소 보장, 예: 제한 1.0 = 최대 1 CPU, 예약 1024 = 다른 컨테이너 대비 2배 우선순위(default 512), 프로덕션: 둘 다 사용(예약으로 최소 보장 + 제한으로 상한선)
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Image Scanning](./02-Image-Scanning.md)** | **[다음: Secrets Management ➡️](./04-Secrets-Management.md)**

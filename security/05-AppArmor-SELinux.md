@@ -1418,6 +1418,26 @@ docker run -d \
 
 ---
 
+## 📚 참고 자료
+
+- [AppArmor Documentation](https://gitlab.com/apparmor/apparmor/-/wikis/Documentation)
+- [SELinux User's and Administrator's Guide](https://access.redhat.com/documentation/en-us/red_hat_enterprise_linux/8/html/using_selinux/)
+- [Docker and AppArmor](https://docs.docker.com/engine/security/apparmor/)
+- [Docker and SELinux](https://docs.docker.com/engine/security/selinux/)
+- [Linux Security Modules](https://www.kernel.org/doc/html/latest/admin-guide/LSM/index.html)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. AppArmor와 SELinux, 둘 중 어느 것이 더 안전할까?
+2. MAC(Mandatory Access Control)이 DAC(Discretionary Access Control)보다 안전한 이유는?
+3. 프로필/정책을 너무 엄격하게 설정하면 어떤 문제가 발생할까?
+
+> 💡 **답변**: 1) 안전성은 비슷, 차이는 접근 방식: AppArmor - 경로 기반(path-based), 설정 간단, Ubuntu/Debian 기본, 학습 곡선 낮음, SELinux - 레이블 기반(label-based), 더 세밀한 제어, RHEL/CentOS/Fedora 기본, 복잡하지만 강력, 실제로는 "올바르게 설정된 것"이 더 안전, 조직 환경에 맞는 것 선택(익숙한 것, 기본 제공되는 것), 2) DAC는 파일 소유자가 권한 결정: Owner가 world-readable 설정 가능, 사용자 실수로 보안 구멍, 권한 상승 시 모든 파일 접근, MAC는 시스템 정책이 강제: 관리자가 정책 정의, 사용자/프로세스가 변경 불가, Root라도 정책 위반 불가, 다층 방어(LSM + DAC), 예: SELinux로 Nginx는 /var/www만 읽기 가능, Root로 실행해도 /etc/shadow 접근 불가, 3) 문제: 정상 동작 차단(False positive), 애플리케이션 업데이트 시 깨짐, 운영 부담 증가(constant troubleshooting), 결국 비활성화(보안 포기), Best Practice: Complain/Permissive 모드에서 시작, 로그 분석 후 점진적 강화, 화이트리스트 접근(필요한 것만 허용), 자동화된 프로필 생성 도구 활용
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Secrets Management](./04-Secrets-Management.md)** | **[다음: User Namespaces ➡️](./06-User-Namespaces.md)**

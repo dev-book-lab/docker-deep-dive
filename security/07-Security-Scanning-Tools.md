@@ -1563,6 +1563,26 @@ Post-deploy → Pre-deploy
 
 ---
 
+## 📚 참고 자료
+
+- [Trivy](https://github.com/aquasecurity/trivy)
+- [Grype](https://github.com/anchore/grype)
+- [Docker Scout](https://docs.docker.com/scout/)
+- [Snyk Container](https://snyk.io/product/container-vulnerability-management/)
+- [OWASP Dependency-Check](https://owasp.org/www-project-dependency-check/)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. 여러 스캐너를 동시에 사용하면 결과가 다를 수 있을까? 왜 그럴까?
+2. SBOM(Software Bill of Materials)이 왜 중요하고, 취약점 스캐닝과 어떤 관계가 있을까?
+3. CI/CD에서 스캔 실패 시 빌드를 중단해야 할까, 경고만 하고 진행해야 할까?
+
+> 💡 **답변**: 1) 결과가 다를 수 있음 - 이유: 취약점 DB 다름(NVD, OSV, GitHub Advisory 등), 업데이트 시점 차이, 매칭 알고리즘 차이(패키지 버전 파싱 방식), False positive 처리 차이, 예: Trivy - NVD + GitHub + RedHat, Grype - NVD + Alpine, Scout - Snyk DB, 실무: 주 스캐너 1개 + 보조 스캐너로 교차 검증, Critical/High는 여러 도구 일치 시 우선 처리, 2) SBOM 중요성: 소프트웨어 구성 요소 목록(재료 명세서), 투명성(어떤 패키지 사용), 규정 준수(Executive Order 14028), 공급망 보안(의존성 추적), 취약점 관계: SBOM 생성 → 취약점 DB 매칭 → 위험도 평가, SBOM 없으면 스캔 불가(무엇을 검사?), 표준: SPDX, CycloneDX, Syft로 생성 가능, 3) 상황에 따라: Severity 기반 정책: Critical/High → 빌드 실패, Medium/Low → 경고만, 환경별 차이: Production → 엄격(실패), Staging → 경고 + 알림, Dev → 정보성, Grace period: 새 취약점 발견 → 7일 유예 → 이후 실패, Exception: 정당한 사유(False positive, 패치 불가) → Suppress with approval, Best Practice: 실패 기준 명확히 + 빠른 피드백 + 예외 프로세스
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: User Namespaces](./06-User-Namespaces.md)** | **[다음: Compliance ➡️](./08-Compliance.md)**

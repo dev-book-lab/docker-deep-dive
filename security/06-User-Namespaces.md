@@ -1307,6 +1307,26 @@ With: 안전 (각 테넌트 격리)
 
 ---
 
+## 📚 참고 자료
+
+- [User Namespaces](https://man7.org/linux/man-pages/man7/user_namespaces.7.html)
+- [Docker User Namespace Remapping](https://docs.docker.com/engine/security/userns-remap/)
+- [Rootless Docker](https://docs.docker.com/engine/security/rootless/)
+- [Understanding User Namespaces](https://www.redhat.com/sysadmin/building-container-namespaces)
+- [CVE-2019-5736 (runc vulnerability)](https://nvd.nist.gov/vuln/detail/CVE-2019-5736)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. User Namespace 없이 비특권 사용자(--user 1000)로 컨테이너를 실행하면 충분히 안전할까?
+2. Rootless Docker와 User Namespace Remapping의 차이는 무엇일까?
+3. User Namespace를 활성화하면 모든 컨테이너에 적용될까, 선택적으로 적용 가능할까?
+
+> 💡 **답변**: 1) 불충분 - `--user 1000`은 컨테이너 내부만 UID 1000, 호스트 관점에서는 여전히 UID 1000(동일), 호스트 UID 1000 파일에 접근 가능, Capabilities는 여전히 부여됨(제한되지만), User Namespace는 근본적으로 다름: 컨테이너 Root(UID 0) → 호스트 UID 100000, 컨테이너 일반 사용자(UID 1000) → 호스트 UID 101000, 호스트 파일시스템에 접근해도 권한 없음, 조합 사용 권장: User Namespace + --user 1000 + Capabilities 제거, 2) 차이점: User Namespace Remapping - Docker Daemon은 Root로 실행, 컨테이너만 매핑, 기능 제한 적음, Rootless Docker - Docker Daemon도 일반 사용자로 실행, 더 안전하지만 기능 제한(Overlay2만, Bridge 네트워크 제한, Cgroup v2 필요), 개인/개발 환경에 적합, Rootless가 더 안전하지만 프로덕션에서는 User Namespace Remapping이 현실적, 3) Daemon 전체 적용 - `/etc/docker/daemon.json`에서 설정하면 모든 컨테이너 적용, 선택적 비활성화: `--userns=host` 옵션, 하지만 선택적 활성화는 불가(전체 on/off만 가능), 권장: 기본 활성화 + 필요 시에만 host로 예외 처리
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: AppArmor & SELinux](./05-AppArmor-SELinux.md)** | **[다음: Security Scanning Tools ➡️](./07-Security-Scanning-Tools.md)**

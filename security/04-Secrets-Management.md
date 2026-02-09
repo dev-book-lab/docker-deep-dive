@@ -1486,6 +1486,26 @@ Vault → 동적 자격 증명 + 자동 로테이션
 
 ---
 
+## 📚 참고 자료
+
+- [Docker Secrets](https://docs.docker.com/engine/swarm/secrets/)
+- [Kubernetes Secrets](https://kubernetes.io/docs/concepts/configuration/secret/)
+- [HashiCorp Vault](https://www.vaultproject.io/docs)
+- [OWASP Secrets Management Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html)
+- [12 Factor App - Config](https://12factor.net/config)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. 환경 변수로 비밀 정보를 전달하는 것이 왜 위험할까?
+2. Docker Secrets와 Kubernetes Secrets의 근본적인 차이는?
+3. Vault의 동적 자격 증명이 정적 자격 증명보다 안전한 이유는?
+
+> 💡 **답변**: 1) 여러 위험: `docker inspect`로 누구나 볼 수 있음(컨테이너 메타데이터에 평문 저장), `docker logs`에 출력될 수 있음(echo $PASSWORD), Child process가 모두 상속(프로세스 트리 전체 노출), `/proc/[pid]/environ`으로 접근 가능, Crash dump에 포함, 환경 변수는 숨기기 어려움, 대안: Docker Secrets(tmpfs, 메모리만), 파일로 마운트(/run/secrets/), 2) Docker Secrets: Swarm 전용, Raft로 암호화 저장, Manager 노드에만 저장, tmpfs로 마운트(디스크 X), Kubernetes Secrets: etcd에 Base64 저장(기본 암호화 X), etcd 암호화 별도 설정 필요, Volume/환경 변수로 주입, RBAC으로 접근 제어, Kubernetes가 더 유연하지만 보안 설정 필요, 3) 동적 자격 증명: 사용 시점에 생성(Just-in-Time), 짧은 TTL(몇 시간), 사용 후 자동 revoke, 유출되어도 곧 만료, Audit log 명확(누가 언제), 정적 자격 증명: 영구적, 유출 시 즉시 교체 필요, 교체 시 다운타임, 누가 사용 중인지 모름, 예: Vault DB Secret Engine → MySQL 임시 계정(8시간 TTL) → 자동 삭제
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Runtime Security](./03-Runtime-Security.md)** | **[다음: AppArmor & SELinux ➡️](./05-AppArmor-SELinux.md)**

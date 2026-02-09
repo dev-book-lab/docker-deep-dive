@@ -1425,6 +1425,26 @@ anchore-cli evaluate check myapp:latest
 
 ---
 
+## 📚 참고 자료
+
+- [Trivy Documentation](https://aquasecurity.github.io/trivy/)
+- [Clair Documentation](https://quay.github.io/clair/)
+- [Anchore Engine](https://docs.anchore.com/current/)
+- [Docker Scan (Snyk)](https://docs.docker.com/engine/scan/)
+- [NIST National Vulnerability Database](https://nvd.nist.gov/)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. 이미지 스캔에서 "CRITICAL" 취약점이 발견되었지만 해당 패키지를 사용하지 않는다면 무시해도 될까?
+2. 베이스 이미지를 변경하지 않고 취약점을 해결할 수 있는 방법은?
+3. 스캔 시점은 언제가 가장 적절할까? (빌드 시 vs 레지스트리 푸시 후 vs 런타임)
+
+> 💡 **답변**: 1) 상황에 따라 다름 - 패키지가 설치만 되어있고 실행 안 하면 위험도 낮음(exploitability 고려), 하지만 공격자가 컨테이너 접근 시 악용 가능, 의존성 체인 확인 필요(간접 사용), Best Practice: 불필요한 패키지 제거, 명시적으로 무시(suppress with justification), 정기적 재평가, 2) 여러 방법: Distroless 이미지 사용(패키지 매니저 없음), Multi-stage build로 런타임 의존성만, 특정 패키지 버전 고정(apt-get install package=version), 가상 패치(AppArmor/SELinux로 취약점 경로 차단), 완벽한 해결은 아니지만 위험 완화, 3) 모든 시점에서 스캔: 빌드 시(Early feedback, 빠른 수정), 레지스트리 푸시 후(Gatekeeper, 배포 차단), 런타임(Continuous monitoring, 새 취약점 감지), CI/CD 파이프라인: Build → Scan → Test → Scan → Push → Scan → Deploy, 런타임 스캔은 주기적(Daily)으로 실행
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Security Principles](./01-Security-Principles.md)** | **[다음: Runtime Security ➡️](./03-Runtime-Security.md)**
