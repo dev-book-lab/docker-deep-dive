@@ -894,6 +894,26 @@ docker service rollback <svc>
 
 ---
 
+## 📚 참고 자료
+
+- [Update service configuration](https://docs.docker.com/engine/swarm/services/#update-a-services-configuration)
+- [Roll back to previous version](https://docs.docker.com/engine/swarm/services/#roll-back-to-the-previous-version-of-a-service)
+- [Configure update behavior](https://docs.docker.com/engine/swarm/services/#configure-a-services-update-behavior)
+- [Blue-Green Deployment](https://martinfowler.com/bliki/BlueGreenDeployment.html)
+- [Canary Deployment](https://martinfowler.com/bliki/CanaryRelease.html)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. `--update-parallelism`을 레플리카 개수와 같게 설정하면 롤링 업데이트의 의미가 있을까?
+2. `start-first`와 `stop-first` 중 어느 것이 더 안전할까? 트레이드오프는?
+3. 카나리 배포에서 10% 트래픽을 어떻게 정확하게 제어할 수 있을까?
+
+> 💡 **답변**: 1) 의미 없음 - 전체를 동시 업데이트하면 일시적 다운타임 발생, 롤링 업데이트 장점(무중단, 위험 분산) 상실, 차라리 Blue-Green 배포가 나음, parallelism은 보통 1~3 또는 전체의 20-30% 권장, 2) `start-first`가 더 안전 - 새 태스크 시작 → 헬스체크 통과 → 구 태스크 종료, 항상 N개 이상 가동, 단점: 순간적 N+parallelism 개 실행(리소스 필요), `stop-first`(기본): 구 태스크 종료 → 새 태스크 시작, 순간적 N-parallelism 개(용량 부족 가능), 리소스 효율적, 프로덕션에서는 start-first + 충분한 리소스 권장, 3) Nginx upstream weight 사용: stable weight=9, canary weight=1, 정확히 10%, 하지만 Swarm 자체로는 불가능, 외부 로드 밸런서(Nginx, Traefik, Istio) 필요, Swarm Ingress는 라운드 로빈만 지원, 또는 레플리카 비율 조정(stable 9개, canary 1개)
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Swarm Networking](./05-Swarm-Networking.md)** | **[다음: High Availability ➡️](./07-High-Availability.md)**

@@ -1069,6 +1069,25 @@ docker-compose exec <service> <cmd>
 
 ---
 
+## 📚 참고 자료
+
+- [Docker Compose Overview](https://docs.docker.com/compose/)
+- [Compose file version 3 reference](https://docs.docker.com/compose/compose-file/compose-file-v3/)
+- [Docker Compose CLI reference](https://docs.docker.com/compose/reference/)
+- [Compose file specification](https://github.com/compose-spec/compose-spec/blob/master/spec.md)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. docker-compose.yml의 `version`은 왜 필요한가? 생략하면 어떻게 될까?
+2. `depends_on`만으로 서비스 시작 순서를 완벽하게 제어할 수 있을까?
+3. Named volume과 Bind mount, 어떤 상황에서 각각 사용해야 할까?
+
+> 💡 **답변**: 1) `version`은 Compose 파일 스키마 버전 지정 - 생략 시 최신 Compose Spec 사용 (버전 번호 없음), 하지만 명시적 버전 지정(3.8)이 호환성 측면에서 안전, 구버전 Compose는 새 기능 사용 시 에러, 2) 불가능 - `depends_on`은 단순 시작 순서만 보장 (컨테이너 생성), 서비스 준비 여부는 보장 안 함, DB가 완전히 준비되기 전에 앱이 시작될 수 있음, 해결: `healthcheck` + `condition: service_healthy` 또는 애플리케이션에서 retry 로직, 3) Named volume: 영속성 필요(DB 데이터, 업로드 파일), Docker가 관리, 백업 용이, 성능 좋음, Bind mount: 개발 환경(hot reload), 설정 파일(읽기 전용), 호스트와 직접 공유 필요, 프로덕션에서는 Named volume 권장
+
+---
+
 <div align="center">
 
 **[다음: Compose Advanced ➡️](./02-Compose-Advanced.md)**

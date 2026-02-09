@@ -921,6 +921,26 @@ docker node demote <NODE>
 
 ---
 
+## 📚 참고 자료
+
+- [Docker Swarm Overview](https://docs.docker.com/engine/swarm/)
+- [Swarm mode key concepts](https://docs.docker.com/engine/swarm/key-concepts/)
+- [Administer and maintain a swarm](https://docs.docker.com/engine/swarm/admin_guide/)
+- [Raft Consensus Algorithm](https://raft.github.io/)
+- [Swarm mode networking](https://docs.docker.com/network/overlay/)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. Manager 노드가 짝수 개(2개, 4개)일 때 왜 문제가 될까?
+2. Worker 노드를 Manager로 승격시키면 즉시 Raft 합의에 참여할까?
+3. Swarm 클러스터에서 모든 Manager 노드가 동시에 재부팅되면 어떻게 될까?
+
+> 💡 **답변**: 1) Raft는 과반수(쿼럼) 기반 - 2개 Manager는 쿼럼 2 필요, 1대 장애 시 쿼럼 확보 불가(1/2), 클러스터 마비, 4개는 쿼럼 3 필요, 2대 장애 시 마비(2/4), 홀수 개(3, 5, 7)가 장애 허용성 최대화, 3개는 1대 장애 허용(2/3), 5개는 2대 허용(3/5), 2) 아니오 - 승격 즉시는 Reachable 상태, Raft 로그 동기화 필요(수 초~수 분), 동기화 완료 후 리더 선출 투표 참여 가능, 기존 리더는 유지, 3) Auto-lock 비활성화 시: 자동 복구, 마지막 재부팅 노드가 리더 선출, 정상 운영, Auto-lock 활성화 시: 각 Manager 수동 unlock 필요, 쿼럼 확보 후 리더 선출, unlock 안 하면 클러스터 정지
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Compose Advanced](./02-Compose-Advanced.md)** | **[다음: Swarm Services ➡️](./04-Swarm-Services.md)**

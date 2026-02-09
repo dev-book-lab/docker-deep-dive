@@ -1252,6 +1252,26 @@ docker-compose --profile monitor up
 
 ---
 
+## 📚 참고 자료
+
+- [Compose file specification - extends](https://docs.docker.com/compose/extends/)
+- [Compose file specification - profiles](https://docs.docker.com/compose/profiles/)
+- [Using multiple Compose files](https://docs.docker.com/compose/multiple-compose-files/)
+- [Environment variables in Compose](https://docs.docker.com/compose/environment-variables/)
+- [YAML anchors and aliases](https://yaml.org/spec/1.2.2/#3222-anchors-and-aliases)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. YAML Anchors와 `extends`의 차이는 무엇이고, 왜 Compose v3에서 `extends`가 deprecated 되었을까?
+2. 여러 Compose 파일을 병합할 때 설정 충돌이 발생하면 어떤 우선순위로 적용될까?
+3. Profiles를 환경 변수로 활성화하는 것과 CLI 옵션으로 활성화하는 것의 차이는?
+
+> 💡 **답변**: 1) YAML Anchors는 같은 파일 내에서만 재사용 가능, `extends`는 다른 파일에서도 가능, Compose v3에서 deprecated된 이유는 Swarm 모드와의 호환성 문제 + YAML Anchors + 다중 파일 병합으로 대체 가능, 2) 우선순위: 나중에 지정된 파일이 우선 (오른쪽이 이김), 예: `-f base.yml -f override.yml`에서 override.yml이 우선, 리스트(ports, volumes)는 병합, 단일 값(image, command)은 덮어쓰기, 3) 환경 변수(`COMPOSE_PROFILES=dev,test`)는 영구적 설정에 유용 (.env 파일, CI/CD), CLI 옵션(`--profile dev`)은 일회성 실행에 유용, 환경 변수가 설정되어 있어도 CLI 옵션이 우선
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Docker Compose](./01-Docker-Compose.md)** | **[다음: Docker Swarm ➡️](./03-Docker-Swarm.md)**

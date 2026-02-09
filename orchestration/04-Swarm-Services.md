@@ -978,6 +978,26 @@ Resources:
 
 ---
 
+## 📚 참고 자료
+
+- [Docker service create reference](https://docs.docker.com/engine/reference/commandline/service_create/)
+- [Deploy services to a swarm](https://docs.docker.com/engine/swarm/services/)
+- [Control service placement](https://docs.docker.com/engine/swarm/services/#control-service-placement)
+- [Reserve memory and CPUs](https://docs.docker.com/engine/swarm/services/#reserve-memory-or-cpus-for-a-service)
+- [Docker service logs](https://docs.docker.com/engine/reference/commandline/service_logs/)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. Replicated 서비스와 Global 서비스, 각각 언제 사용하는 것이 적합할까?
+2. `--constraint`와 `--placement-pref`의 차이는 무엇이고, 함께 사용하면 어떻게 동작할까?
+3. Ingress 모드와 Host 모드 중 어느 것이 성능이 더 좋을까?
+
+> 💡 **답변**: 1) Replicated: 상태 비저장(Stateless) 애플리케이션, 스케일링 필요(웹 서버, API), 로드 밸런싱 필요, Global: 모니터링 에이전트(Node Exporter, cAdvisor), 로그 수집기(Fluentd), 네트워크 프록시, 모든 노드에서 실행 필요한 것, 2) `--constraint`: 강제 조건(필수), 조건 불만족 시 배치 안 됨, `--placement-pref`: 선호도(권장), 최선을 다하지만 보장은 안 함, 함께 사용: constraint 먼저 필터링 → 남은 노드 중 pref로 분산, 예: constraint로 SSD 노드만 → pref로 zone 분산, 3) Host 모드가 약간 더 빠름 - Ingress는 IPVS 로드 밸런서 거침(hop 추가), Host는 직접 바인딩, 하지만 차이는 미미(ms 단위), Ingress 장점(어느 노드든 접속 가능, 로드 밸런싱)이 더 중요, 프로덕션에서는 Ingress 권장
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Docker Swarm](./03-Docker-Swarm.md)** | **[다음: Swarm Networking ➡️](./05-Swarm-Networking.md)**

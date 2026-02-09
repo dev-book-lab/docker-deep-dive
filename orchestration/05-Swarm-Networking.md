@@ -1100,6 +1100,26 @@ docker service create --network <n> <image>
 
 ---
 
+## 📚 참고 자료
+
+- [Swarm mode overlay networking](https://docs.docker.com/network/overlay/)
+- [Use overlay networks](https://docs.docker.com/network/network-tutorial-overlay/)
+- [Swarm mode routing mesh](https://docs.docker.com/engine/swarm/ingress/)
+- [VXLAN Protocol](https://datatracker.ietf.org/doc/html/rfc7348)
+- [Service discovery](https://docs.docker.com/network/#service-discovery)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. Ingress 네트워크가 없다면 Swarm은 어떻게 로드 밸런싱을 구현할까?
+2. Overlay 네트워크를 암호화하면 성능이 얼마나 저하될까?
+3. VIP 방식과 DNSRR 방식, 어떤 경우에 각각 사용해야 할까?
+
+> 💡 **답변**: 1) Ingress 없으면 외부 로드 밸런서 필요(Nginx, HAProxy, ALB 등), 각 노드 IP를 백엔드로 등록, 태스크 없는 노드 접속 시 실패, 수동 헬스체크 설정 필요, Ingress 장점: 자동 라우팅, 어느 노드든 접속 가능, 태스크 없어도 전달, 2) 암호화 오버헤드 약 10-15%, IPSec 사용, CPU 사용량 증가, 민감한 데이터(금융, 의료)는 필수, 내부 네트워크는 선택적, 성능 중요 시 애플리케이션 레벨 암호화(TLS) 고려, 3) VIP(기본): 대부분 경우 사용, 자동 로드 밸런싱, 클라이언트는 단일 IP만 봄, DNSRR: 레거시 애플리케이션(DNS 캐싱 문제), 클라이언트 측 로드 밸런싱 필요, Cassandra/Redis Cluster 같은 분산 시스템(모든 노드 IP 필요), Java RMI 등 특수 프로토콜
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Swarm Services](./04-Swarm-Services.md)** | **[다음: Rolling Updates ➡️](./06-Rolling-Updates.md)**

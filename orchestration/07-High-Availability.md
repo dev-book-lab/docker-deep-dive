@@ -972,6 +972,26 @@ docker node demote <node>
 
 ---
 
+## 📚 참고 자료
+
+- [Swarm mode overview - High availability](https://docs.docker.com/engine/swarm/#feature-highlights)
+- [Administer and maintain a swarm](https://docs.docker.com/engine/swarm/admin_guide/)
+- [Disaster recovery](https://docs.docker.com/engine/swarm/admin_guide/#back-up-the-swarm)
+- [Raft Consensus in Docker Swarm](https://docs.docker.com/engine/swarm/raft/)
+- [PostgreSQL High Availability](https://www.postgresql.org/docs/current/high-availability.html)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. 99.99% 가용성과 99.999% 가용성의 실제 차이는 얼마나 클까?
+2. Manager 노드가 5개에서 7개로 늘리면 가용성이 향상될까, 악화될까?
+3. 데이터베이스 Primary-Replica 구조에서 Primary 장애 시 자동 Failover는 항상 안전할까?
+
+> 💡 **답변**: 1) 99.99%(Four Nines): 연간 52.6분 다운타임, 99.999%(Five Nines): 연간 5.26분 다운타임, 차이는 10배지만 달성 비용은 기하급수적 증가, Five Nines 요구사항: 다중 리전, 자동 페일오버, 24/7 모니터링, 전문 운영팀, 철저한 재해 복구 계획, 금융/의료는 필수, 일반 웹 서비스는 Four Nines면 충분, 2) 향상되지만 미미함 - 5개: 2대 장애 허용, 7개: 3대 장애 허용, 동시에 3대 장애는 극히 드묾, 단점: Raft 합의 오버헤드 증가, 네트워크 트래픽 증가, 쓰기 성능 약간 저하, 권장: 3개(소규모), 5개(중대규모), 7개(초대규모/멀티 리전), 9개 이상은 비권장, 3) 항상 안전하지 않음 - Split-brain 위험: 네트워크 분할 시 두 Primary 가능, 데이터 불일치, Quorum 기반 시스템 필요(etcd, Consul), 자동 페일오버 조건: 확실한 Primary 장애 확인(최소 3번 헬스체크), Replica 데이터 동기화 확인(replication lag < 1초), 단일 Replica만 승격(두 개 동시 승격 방지), 보수적 접근: 수동 페일오버 + 알림, 자동 페일오버는 철저한 테스트 필요
+
+---
+
 <div align="center">
 
 **[⬅️ 이전: Rolling Updates](./06-Rolling-Updates.md)** | **[홈으로 🏠](../README.md)**
