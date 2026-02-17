@@ -1534,6 +1534,6 @@ kubectl logs -l app=falco
 
 <div align="center">
 
-**[⬅️ 이전: Load Balancing](./08-Load-Balancing.md)** | **[다음 섹션: Storage ➡️](../storage/01-Volume-Types.md)**
+**[⬅️ 이전: Load Balancing](./08-Load-Balancing.md)** | **[홈으로 🏠](../README.md)**
 
 </div>

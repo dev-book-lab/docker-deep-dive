@@ -889,6 +889,6 @@ docker buildx build --platform linux/amd64,linux/arm64 -t myapp .
 
 <div align="center">
 
-**[⬅️ 이전: Cgroups](./06-Cgroups.md)** | **[다음 섹션: Images ➡️](../images/01-Dockerfile-Best-Practices.md)**
+**[⬅️ 이전: Cgroups](./06-Cgroups.md)** | **[홈으로 🏠](../README.md)**
 
 </div>

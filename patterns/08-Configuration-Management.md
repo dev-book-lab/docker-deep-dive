@@ -1101,6 +1101,6 @@ Best Practices:
 
 <div align="center">
 
-**[⬅️ 이전: Graceful Shutdown](./07-Graceful-Shutdown.md)** | **[🏠 Patterns 섹션 완료!](./README.md)**
+**[⬅️ 이전: Graceful Shutdown](./07-Graceful-Shutdown.md)** | **[홈으로 🏠](../README.md)**
 
 </div>

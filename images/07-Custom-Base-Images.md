@@ -1347,6 +1347,6 @@ major.minor.patch.build
 
 <div align="center">
 
-**[⬅️ 이전: Image Security](./06-Image-Security.md)** | **[다음 섹션: Networking ➡️](../networking/01-Network-Fundamentals.md)**
+**[⬅️ 이전: Image Security](./06-Image-Security.md)** | **[홈으로 🏠](../README.md)**
 
 </div>

@@ -1113,6 +1113,6 @@ Best Practices:
 
 <div align="center">
 
-**[⬅️ 이전: Deployment Patterns](./03-Deployment-Patterns.md)** | **[🏠 Kubernetes Bridge 섹션 완료!](./README.md)**
+**[⬅️ 이전: Deployment Patterns](./03-Deployment-Patterns.md)** | **[홈으로 🏠](../README.md)**
 
 </div>

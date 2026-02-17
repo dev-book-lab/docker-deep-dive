@@ -16,12 +16,12 @@
 ```
 Architecture:
 ┌─────────────────────────────────────────────────┐
-│  ┌──────────┐   ┌──────────┐   ┌──────────┐   │
-│  │ Backend  │   │Frontend  │   │Database  │   │
-│  └────┬─────┘   └────┬─────┘   └────┬─────┘   │
-│       │              │              │          │
-│       └──────────────┴──────────────┘          │
-│                     │ (Metrics)                │
+│  ┌──────────┐   ┌──────────┐   ┌──────────┐     │
+│  │ Backend  │   │Frontend  │   │Database  │     │
+│  └────┬─────┘   └────┬─────┘   └────┬─────┘     │
+│       │              │              │           │
+│       └──────────────┴──────────────┘           │
+│                     │ (Metrics)                 │
 │              ┌─────────────┐                    │
 │              │ Prometheus  │                    │
 │              └──────┬──────┘                    │
@@ -279,6 +279,190 @@ Best Practices:
 ✅ 대시보드 자동화
 ✅ SLO 기반
 ```
+
+---
+
+## 📚 참고 자료
+
+- [Prometheus Documentation](https://prometheus.io/docs/)
+- [Grafana Documentation](https://grafana.com/docs/)
+- [Node Exporter](https://github.com/prometheus/node_exporter)
+- [cAdvisor](https://github.com/google/cadvisor)
+- [PromQL Tutorial](https://prometheus.io/docs/prometheus/latest/querying/basics/)
+
+---
+
+## 🤔 생각해볼 문제
+
+1. 모든 메트릭을 수집해야 하는가?
+2. Prometheus만으로 충분한가?
+3. Alert는 얼마나 많이 설정해야 하는가?
+
+> 💡 **답변**:
+> 
+> **1) 모든 메트릭 수집?**
+> 
+> ```
+> NO! 필요한 것만 선택적으로
+> 
+> 문제:
+> - 스토리지 폭발 (TB급)
+> - 쿼리 느려짐
+> - 비용 증가
+> - 노이즈 증가
+> 
+> 4 Golden Signals (Google SRE):
+> ✅ Latency (지연 시간)
+> ✅ Traffic (트래픽)
+> ✅ Errors (에러율)
+> ✅ Saturation (포화도)
+> 
+> 우선순위:
+> 
+> P0 (필수):
+> - CPU, Memory, Disk
+> - Request Rate
+> - Error Rate
+> - Response Time (p95, p99)
+> 
+> P1 (중요):
+> - Network I/O
+> - Container Restarts
+> - Database Connections
+> - Queue Depth
+> 
+> P2 (선택):
+> - 세부 비즈니스 메트릭
+> - 사용자 행동
+> - A/B 테스트 결과
+> 
+> 결론:
+> 4 Golden Signals + 핵심 인프라
+> = 80% 문제 발견 가능
+> ```
+> 
+> **2) Prometheus만으로?**
+> 
+> ```
+> Short-term: YES
+> Long-term: NO
+> 
+> Prometheus 장점:
+> ✅ 메트릭 수집
+> ✅ 단기 저장 (15-30일)
+> ✅ PromQL (강력)
+> ✅ Alerting
+> 
+> Prometheus 한계:
+> ❌ 장기 저장 (> 30일)
+> ❌ 고가용성 (단일 노드)
+> ❌ 수평 확장 어려움
+> ❌ 로그 수집 없음
+> ❌ 트레이싱 없음
+> 
+> 완전한 Observability:
+> 
+> 1. Metrics (Prometheus)
+>    - 무엇이 일어나는가?
+>    - CPU, Memory, Request Rate
+> 
+> 2. Logs (ELK/Loki)
+>    - 왜 일어났는가?
+>    - Error Stack Trace
+>    - 상세 이벤트
+> 
+> 3. Traces (Jaeger/Zipkin)
+>    - 어떻게 흘러갔는가?
+>    - Request Flow
+>    - Latency 병목
+> 
+> 확장 옵션:
+> 
+> Thanos:
+> - Prometheus 장기 저장
+> - 글로벌 쿼리
+> - 다중 클러스터
+> 
+> Cortex:
+> - Prometheus-as-a-Service
+> - 멀티테넌시
+> - 수평 확장
+> 
+> Managed:
+> - Datadog
+> - New Relic
+> - Grafana Cloud
+> 
+> 결론:
+> 시작: Prometheus
+> 성장: Prometheus + ELK
+> 대규모: Thanos + ELK + Jaeger
+> ```
+> 
+> **3) Alert 개수?**
+> 
+> ```
+> 적을수록 좋음!
+> 
+> Alert Fatigue:
+> 너무 많음 → 무시함 → 실제 장애 놓침
+> 
+> 원칙:
+> 
+> 1. Actionable (실행 가능)
+>    ✅ CPU > 80% for 5m → Scale up
+>    ❌ CPU > 50% → 뭘 하지?
+> 
+> 2. High Impact (영향 큼)
+>    ✅ Service Down
+>    ❌ Disk 60% (여유 있음)
+> 
+> 3. Urgent (긴급)
+>    ✅ Error Rate > 10%
+>    ❌ Disk 80% (며칠 여유)
+> 
+> 4. User-Facing (사용자 영향)
+>    ✅ API Response Time > 2s
+>    ❌ Background Job Slow
+> 
+> Alert 계층:
+> 
+> P0 (즉시 대응):
+> - Service Down
+> - Error Rate > 10%
+> - Latency p99 > 5s
+> → PagerDuty (24/7)
+> 
+> P1 (업무 시간):
+> - Disk > 85%
+> - Memory > 90%
+> - CPU > 80% for 30m
+> → Slack
+> 
+> P2 (모니터링):
+> - Disk > 70%
+> - Slow Queries
+> - Warning Logs
+> → Email (일간 요약)
+> 
+> 숫자:
+> 소규모: 5-10개 Alert
+> 중규모: 10-20개
+> 대규모: 20-50개
+> 
+> → 더 많으면 통합 필요
+> 
+> Best Practice:
+> ✅ SLO 기반 Alert
+> ✅ 증상 Alert (원인 X)
+> ✅ Runbook 첨부
+> ✅ 정기 리뷰 (불필요한 것 삭제)
+> 
+> 결론:
+> 적을수록 좋음 (< 20개)
+> 실행 가능 + 영향 큼 + 긴급
+> ```
+
 
 ---
 

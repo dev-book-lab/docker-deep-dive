@@ -846,6 +846,6 @@ Best Practices:
 
 <div align="center">
 
-**[⬅️ 이전: Common Problems](./05-Common-Problems.md)** | **[🏠 Debugging 섹션 완료!](./README.md)**
+**[⬅️ 이전: Common Problems](./05-Common-Problems.md)** | **[홈으로 🏠](../README.md)**
 
 </div>

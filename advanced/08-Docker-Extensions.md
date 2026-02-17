@@ -1852,6 +1852,6 @@ Extension SDK 주요 API:
 
 <div align="center">
 
-**[⬅️ 이전: Custom Plugins](./07-Custom-Plugins.md)** | **[🏠 Advanced 섹션 완료!](./README.md)**
+**[⬅️ 이전: Custom Plugins](./07-Custom-Plugins.md)** | **[홈으로 🏠](../README.md)**
 
 </div>

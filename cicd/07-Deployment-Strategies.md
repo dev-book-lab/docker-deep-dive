@@ -1041,6 +1041,6 @@ Best Practices:
 
 <div align="center">
 
-**[⬅️ 이전: GitOps](./06-GitOps.md)** | **[🏠 CI/CD 섹션 완료!](./README.md)**
+**[⬅️ 이전: GitOps](./06-GitOps.md)** | **[홈으로 🏠](../README.md)**
 
 </div>
