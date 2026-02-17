@@ -1,651 +1,369 @@
 <div align="center">
 
-# 🐳 Docker Deep Dive
+# ⚙️ JVM Deep Dive
 
-**단순한 Docker 튜토리얼이 아닌, Docker 내부까지 완전히 이해하는 심화 학습 자료**
-
-<br/>
-
-> *"컨테이너를 실행하는 것을 넘어, Docker가 실제로 어떻게 동작하는지 완전히 이해하기"*
-
-Namespaces, Cgroups, Union Filesystem부터 네트워킹, 보안, 성능까지  
-**왜 그렇게 동작하는지** 원리부터 파헤치는 Docker 완전 정복 가이드
+**"JVM을 블랙박스가 아닌, 완전히 해부된 기계로 이해하기"**
 
 <br/>
 
-[![Docker](https://img.shields.io/badge/Docker-2496ED?style=flat-square&logo=docker&logoColor=white)](https://www.docker.com)
-[![Linux](https://img.shields.io/badge/Linux-FCC624?style=flat-square&logo=linux&logoColor=black)](https://www.kernel.org)
-[![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white)](https://kubernetes.io)
+> *"Java 코드를 작성하는 것과, Java 코드가 어떻게 살아 움직이는지 아는 것은 다르다"*
+
+바이트코드부터 GC 알고리즘, JIT 컴파일러, Java Memory Model까지  
+**왜 이렇게 설계됐는가** 라는 질문으로 JVM 내부를 끝까지 파헤칩니다
+
+<br/>
+
+[![GitHub](https://img.shields.io/badge/GitHub-dev--book--lab-181717?style=flat-square&logo=github)](https://github.com/dev-book-lab)
+[![Java](https://img.shields.io/badge/Java-8%2B-orange?style=flat-square&logo=openjdk)](https://www.java.com)
+[![Docs](https://img.shields.io/badge/Docs-69개-blue?style=flat-square&logo=readthedocs&logoColor=white)](./README.md)
 [![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square&logo=opensourceinitiative&logoColor=white)](./LICENSE)
 
 </div>
 
 ---
 
+## 🎯 이 레포에 대하여
+
+JVM에 관한 자료는 많습니다. 하지만 대부분은 **"무엇인가"** 에서 멈춥니다.
+
+| 일반 자료 | 이 레포 |
+|----------|---------|
+| "GC는 메모리를 수거합니다" | GC Root 탐색 알고리즘과 Stop-The-World가 발생하는 정확한 시점 |
+| "volatile은 가시성을 보장합니다" | 메모리 배리어가 CPU 캐시에 내리는 명령 수준까지 |
+| "JIT는 코드를 최적화합니다" | Tiered Compilation 5단계, OSR, Deoptimization 메커니즘 |
+| "synchronized는 무겁습니다" | Biased → Thin → Fat Lock 전이와 Mark Word 변화 |
+| 이론 나열 | 실행 가능한 코드 + `javap`, `JFR`, `JMH` 실측 포함 |
+
+---
+
 ## 🚀 빠른 시작
 
-각 섹션의 첫 챕터부터 바로 학습을 시작하세요!
+각 챕터의 첫 문서부터 바로 학습을 시작하세요!
 
-[![Fundamentals](https://img.shields.io/badge/🔹_Fundamentals-Container_vs_VM-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./fundamentals/01-Container-vs-VM.md)
-[![Images](https://img.shields.io/badge/🔹_Images-Dockerfile_Best_Practices-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./images/01-Dockerfile-Best-Practices.md)
-[![Networking](https://img.shields.io/badge/🔹_Networking-Network_Fundamentals-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./networking/01-Network-Fundamentals.md)
-[![Storage](https://img.shields.io/badge/🔹_Storage-Volume_Types-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./storage/01-Volume-Types.md)
-[![Orchestration](https://img.shields.io/badge/🔹_Orchestration-Docker_Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./orchestration/01-Docker-Compose.md)
-[![Security](https://img.shields.io/badge/🔹_Security-Security_Principles-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./security/01-Security-Principles.md)
-[![Performance](https://img.shields.io/badge/🔹_Performance-Resource_Limits-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./performance/01-Resource-Limits.md)
-[![Advanced](https://img.shields.io/badge/🔹_Advanced-Container_Runtime-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./advanced/01-Container-Runtime.md)
-[![Patterns](https://img.shields.io/badge/🔹_Patterns-Microservices-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./patterns/01-Microservices.md)
-[![CI/CD](https://img.shields.io/badge/🔹_CI/CD-Docker_in_CI-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./cicd/01-Docker-in-CI.md)
-[![Debugging](https://img.shields.io/badge/🔹_Debugging-Debugging_Techniques-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./debugging/01-Debugging-Techniques.md)
-[![Real World](https://img.shields.io/badge/🔹_Real_World-Web_Application-2496ED?style=for-the-badge&logo=docker&logoColor=white)](./real-world/01-Web-Application.md)
-[![K8s Bridge](https://img.shields.io/badge/🔹_Kubernetes-Docker_to_K8s-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)](./kubernetes-bridge/01-Docker-to-K8s.md)
+[![Class Loading](https://img.shields.io/badge/🔹_Class_Loading-ClassLoader_Hierarchy-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)](./class-loading/classloader-hierarchy.md)
+[![Runtime Data Areas](https://img.shields.io/badge/🔹_Runtime_Data-Heap_Structure-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)](./runtime-data-areas/heap-structure.md)
+[![Bytecode](https://img.shields.io/badge/🔹_Bytecode-Class_File_Format-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)](./bytecode/class-file-format.md)
+[![Execution Engine](https://img.shields.io/badge/🔹_Execution_Engine-Interpreter_Mechanism-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)](./execution-engine/interpreter-mechanism.md)
+[![GC](https://img.shields.io/badge/🔹_Garbage_Collection-GC_Roots_%26_Reachability-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)](./garbage-collection/gc-roots-and-reachability.md)
+[![JMM](https://img.shields.io/badge/🔹_Java_Memory_Model-CPU_Cache_%26_Visibility-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)](./java-memory-model/cpu-cache-and-visibility-problem.md)
+[![Concurrency](https://img.shields.io/badge/🔹_Concurrency_Internals-Object_Monitor-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)](./concurrency-internals/object-monitor.md)
+[![Performance](https://img.shields.io/badge/🔹_Performance_Tuning-JVM_Flags_Guide-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)](./performance-tuning/jvm-flags-complete-guide.md)
+[![Advanced](https://img.shields.io/badge/🔹_Advanced_Internals-Object_Header_%26_Mark_Word-E76F00?style=for-the-badge&logo=openjdk&logoColor=white)](./advanced-internals/object-header-and-mark-word.md)
 
 ---
 
-## 🎯 이 프로젝트에 대하여
+## 📚 전체 학습 지도
 
-Docker를 "그냥 쓰는 것"에서 "**완전히 이해하는 것**"으로 도약하기 위한 심화 학습 자료입니다.
-
-### ✨ 특징
-
-| 🔬 **원리 중심** | 💻 **실습 중심** | 🔥 **실전 사례** | 🏗️ **아키텍처 이해** |
-|:---:|:---:|:---:|:---:|
-| "왜?"라는 질문에<br/>명확한 답 | 모든 개념은<br/>직접 실행 가능 | 실무에서<br/>바로 쓰는 패턴 | 내부 구조까지<br/>완벽 파악 |
-
-- ✅ **80+ 심화 주제** - Fundamentals부터 고급 주제까지 완전 커버
-- ✅ **실행 가능한 예제** - 모든 명령어와 코드를 직접 실행 가능
-- ✅ **원리 기반 학습** - 단순 사용법이 아닌 동작 원리 이해
-- ✅ **실전 시나리오** - 프로덕션 환경의 실제 문제 해결
-- ✅ **Before/After 비교** - 최적화 전후를 명확히 비교
-- ✅ **성능 벤치마크** - 실제 성능 측정 결과 포함
-
----
-
-## 📚 목차
-
-> 💡 **각 챕터를 클릭하면 상세한 학습 문서로 이동합니다**
-
-### 🔹 Fundamentals - 핵심 기초
-
-<details>
-<summary><b>Docker의 근본 원리를 완전히 이해하기 (7개 챕터)</b></summary>
-
-|                            주제                             | 핵심 내용 |
-|:-----------------------------------------------------------:|----------|
-|       **[01. Container vs VM](./fundamentals/01-Container-vs-VM.md)**        | 컨테이너와 VM의 근본적 차이, 성능 비교 실험 |
-|   **[02. Docker Architecture](./fundamentals/02-Docker-Architecture.md)**   | dockerd, containerd, runc 구조, 컴포넌트 통신 흐름 |
-|         **[03. Image Layers](./fundamentals/03-Image-Layers.md)**          | 레이어 시스템, Copy-on-Write, 캐싱 전략 |
-|       **[04. Union Filesystem](./fundamentals/04-Union-Filesystem.md)**        | OverlayFS 동작 원리, 스토리지 드라이버 비교 |
-|      **[05. Namespaces](./fundamentals/05-Namespaces.md)**      | 7가지 Namespace, 격리 메커니즘, 실전 활용 |
-|        **[06. Cgroups](./fundamentals/06-Cgroups.md)**       | CPU/메모리/I/O 제한, OOM Killer, 리소스 관리 |
-| **[07. Docker Engine](./fundamentals/07-Docker-Engine.md)** | 이벤트 시스템, 플러그인, Engine API |
-
-</details>
-
-### 🔹 Images - 이미지 심화
-
-<details>
-<summary><b>효율적이고 안전한 이미지 빌드 (7개 챕터)</b></summary>
-
-|                      주제                      | 핵심 내용 |
-|:----------------------------------------------:|----------|
-|   **[01. Dockerfile Best Practices](./images/01-Dockerfile-Best-Practices.md)**   | 레이어 최적화, 빌드 컨텍스트, 캐시 활용 |
-| **[02. Multi-Stage Builds](./images/02-Multi-Stage-Builds.md)** | 빌드/실행 분리, 이미지 크기 최소화 |
-| **[03. Image Optimization](./images/03-Image-Optimization.md)** | Alpine vs Distroless, 불필요한 파일 제거 |
-| **[04. Cache Mechanism](./images/04-Cache-Mechanism.md)** | 빌드 캐시 동작, 무효화 조건, 원격 캐시 |
-|    **[05. BuildKit](./images/05-BuildKit.md)**    | 병렬 빌드, Secrets, SSH 마운트 |
-| **[06. Image Security](./images/06-Image-Security.md)** | 취약점 스캔, 서명, 최소 권한 |
-| **[07. Custom Base Images](./images/07-Custom-Base-Images.md)** | scratch부터 시작, 맞춤형 베이스 제작 |
-
-</details>
-
-### 🔹 Networking - 네트워킹 완전 정복
-
-<details>
-<summary><b>컨테이너 네트워킹의 모든 것 (9개 챕터)</b></summary>
-
-|                       주제                        | 핵심 내용 |
-|:-------------------------------------------------:|----------|
-|   **[01. Network Fundamentals](./networking/01-Network-Fundamentals.md)**   | veth pair, bridge, iptables, 패킷 흐름 |
-| **[02. Bridge Network](./networking/02-Bridge-Network.md)** | 기본 네트워크, 사용자 정의 bridge, DNS |
-| **[03. Host Network](./networking/03-Host-Network.md)** | Host 모드, 성능 특성, 사용 시나리오 |
-| **[04. Overlay Network](./networking/04-Overlay-Network.md)** | 멀티 호스트 네트워킹, VXLAN, Swarm |
-| **[05. Macvlan Network](./networking/05-Macvlan-Network.md)** | 물리 네트워크 통합, VLAN 태깅 |
-| **[06. Custom Networks](./networking/06-Custom-Networks.md)** | CNI 플러그인, Calico, Weave |
-| **[07. DNS Resolution](./networking/07-DNS-Resolution.md)** | 내부 DNS, 서비스 디스커버리 |
-| **[08. Load Balancing](./networking/08-Load-Balancing.md)** | 내장 LB, 헬스 체크, 외부 연동 |
-| **[09. Network Security](./networking/09-Network-Security.md)** | 네트워크 정책, 방화벽, 암호화 |
-
-</details>
-
-### 🔹 Storage - 스토리지 & 데이터 관리
-
-<details>
-<summary><b>영속적 데이터 관리 전략 (7개 챕터)</b></summary>
-
-|                    주제                     | 핵심 내용 |
-|:-------------------------------------------:|----------|
-|   **[01. Volume Types](./storage/01-Volume-Types.md)**   | Named Volume, Anonymous Volume 비교 |
-| **[02. Bind Mounts](./storage/02-Bind-Mounts.md)** | 호스트 디렉토리 마운트, 개발 환경 |
-| **[03. Tmpfs Mounts](./storage/03-Tmpfs-Mounts.md)** | 메모리 기반 스토리지, 임시 데이터 |
-| **[04. Volume Drivers](./storage/04-Volume-Drivers.md)** | NFS, GlusterFS, Ceph 통합 |
-| **[05. Storage Drivers](./storage/05-Storage-Drivers.md)** | overlay2, btrfs, zfs 상세 비교 |
-| **[06. Data Persistence](./storage/06-Data-Persistence.md)** | 데이터베이스 영속성 전략 |
-| **[07. Backup & Restore](./storage/07-Backup-Restore.md)** | 백업 자동화, 재해 복구 |
-
-</details>
-
-### 🔹 Orchestration - 오케스트레이션
-
-<details>
-<summary><b>컨테이너 편성과 관리 (7개 챕터)</b></summary>
-
-|                        주제                         | 핵심 내용 |
-|:---------------------------------------------------:|----------|
-|   **[01. Docker Compose](./orchestration/01-Docker-Compose.md)**   | 멀티 컨테이너 앱, YAML 작성법 |
-| **[02. Compose Advanced](./orchestration/02-Compose-Advanced.md)** | extends, profiles, 환경 분리 |
-| **[03. Docker Swarm](./orchestration/03-Docker-Swarm.md)** | 클러스터 구성, 매니저/워커 노드 |
-| **[04. Swarm Services](./orchestration/04-Swarm-Services.md)** | 서비스 배포, 레플리카, 제약 조건 |
-| **[05. Swarm Networking](./orchestration/05-Swarm-Networking.md)** | Ingress 네트워크, 서비스 메시 |
-| **[06. Rolling Updates](./orchestration/06-Rolling-Updates.md)** | 무중단 배포, 롤백 전략 |
-| **[07. High Availability](./orchestration/07-High-Availability.md)** | 고가용성 아키텍처, 장애 복구 |
-
-</details>
-
-### 🔹 Security - 보안 강화
-
-<details>
-<summary><b>프로덕션 보안 베스트 프랙티스 (8개 챕터)</b></summary>
-
-|                          주제                           | 핵심 내용 |
-|:-------------------------------------------------------:|----------|
-|   **[01. Security Principles](./security/01-Security-Principles.md)**   | 최소 권한, 심층 방어, 공격 표면 |
-| **[02. Image Scanning](./security/02-Image-Scanning.md)** | Trivy, Clair, Anchore 활용 |
-| **[03. Runtime Security](./security/03-Runtime-Security.md)** | Seccomp, AppArmor, Capabilities |
-| **[04. Secrets Management](./security/04-Secrets-Management.md)** | Docker Secrets, Vault 통합 |
-| **[05. AppArmor & SELinux](./security/05-AppArmor-SELinux.md)** | MAC 시스템, 프로파일 작성 |
-| **[06. User Namespaces](./security/06-User-Namespaces.md)** | UID 재매핑, rootless 컨테이너 |
-| **[07. Security Scanning Tools](./security/07-Security-Scanning-Tools.md)** | 자동화된 보안 스캔 파이프라인 |
-| **[08. Compliance](./security/08-Compliance.md)** | CIS 벤치마크, PCI-DSS, HIPAA |
-
-</details>
-
-### 🔹 Performance - 성능 최적화
-
-<details>
-<summary><b>컨테이너 성능 극대화 (8개 챕터)</b></summary>
-
-|                       주제                        | 핵심 내용 |
-|:-------------------------------------------------:|----------|
-|   **[01. Resource Limits](./performance/01-Resource-Limits.md)**   | CPU/메모리 제한 전략 |
-| **[02. CPU Management](./performance/02-CPU-Management.md)** | CPU pinning, NUMA 인식 |
-| **[03. Memory Management](./performance/03-Memory-Management.md)** | 메모리 누수 탐지, OOM 대응 |
-| **[04. I/O Performance](./performance/04-IO-Performance.md)** | 디스크 I/O 최적화, 벤치마킹 |
-| **[05. Monitoring](./performance/05-Monitoring.md)** | Prometheus, cAdvisor 통합 |
-| **[06. Logging](./performance/06-Logging.md)** | 중앙화 로깅, ELK 스택 |
-| **[07. Profiling](./performance/07-Profiling.md)** | 애플리케이션 프로파일링 |
-| **[08. Benchmarking](./performance/08-Benchmarking.md)** | 성능 테스트 방법론 |
-
-</details>
-
-### 🔹 Advanced - 고급 주제
-
-<details>
-<summary><b>Docker 내부 깊숙이 (8개 챕터)</b></summary>
-
-|                     주제                      | 핵심 내용 |
-|:---------------------------------------------:|----------|
-|   **[01. Container Runtime](./advanced/01-Container-Runtime.md)**   | OCI Runtime Spec 상세 |
-| **[02. OCI Specification](./advanced/02-OCI-Specification.md)** | Image/Runtime Spec 분석 |
-| **[03. containerd](./advanced/03-containerd.md)** | containerd 독립 사용 |
-| **[04. runc](./advanced/04-runc.md)** | runc 직접 제어 |
-| **[05. Docker API](./advanced/05-Docker-API.md)** | REST API 완전 정복 |
-| **[06. Docker SDK](./advanced/06-Docker-SDK.md)** | Python/Go SDK 활용 |
-| **[07. Custom Plugins](./advanced/07-Custom-Plugins.md)** | 플러그인 개발 가이드 |
-| **[08. Docker Extensions](./advanced/08-Docker-Extensions.md)** | Docker Desktop 확장 |
-
-</details>
-
-### 🔹 Patterns - 실전 패턴
-
-<details>
-<summary><b>프로덕션 검증된 디자인 패턴 (8개 챕터)</b></summary>
-
-|                         주제                          | 핵심 내용 |
-|:-----------------------------------------------------:|----------|
-|   **[01. Microservices](./patterns/01-Microservices.md)**   | 마이크로서비스 아키텍처 |
-| **[02. Sidecar Pattern](./patterns/02-Sidecar-Pattern.md)** | 사이드카 컨테이너 활용 |
-| **[03. Ambassador Pattern](./patterns/03-Ambassador-Pattern.md)** | 프록시 패턴 구현 |
-| **[04. Adapter Pattern](./patterns/04-Adapter-Pattern.md)** | 레거시 시스템 통합 |
-| **[05. Init Containers](./patterns/05-Init-Containers.md)** | 초기화 컨테이너 패턴 |
-| **[06. Health Checks](./patterns/06-Health-Checks.md)** | 헬스 체크 전략 |
-| **[07. Graceful Shutdown](./patterns/07-Graceful-Shutdown.md)** | 우아한 종료 처리 |
-| **[08. Configuration Management](./patterns/08-Configuration-Management.md)** | 설정 관리 베스트 프랙티스 |
-
-</details>
-
-### 🔹 CI/CD - 지속적 통합/배포
-
-<details>
-<summary><b>Docker 기반 CI/CD 파이프라인 (7개 챕터)</b></summary>
-
-|                        주제                         | 핵심 내용 |
-|:---------------------------------------------------:|----------|
-|   **[01. Docker in CI](./cicd/01-Docker-in-CI.md)**   | GitHub Actions, GitLab CI |
-| **[02. Image Tagging](./cicd/02-Image-Tagging.md)** | 태깅 전략, 버저닝 |
-| **[03. Registry Setup](./cicd/03-Registry-Setup.md)** | Private Registry 구축 |
-| **[04. Automated Testing](./cicd/04-Automated-Testing.md)** | 컨테이너 기반 테스트 |
-| **[05. Security Scanning](./cicd/05-Security-Scanning.md)** | 파이프라인 보안 스캔 |
-| **[06. GitOps](./cicd/06-GitOps.md)** | Git 기반 배포 자동화 |
-| **[07. Deployment Strategies](./cicd/07-Deployment-Strategies.md)** | Blue/Green, Canary |
-
-</details>
-
-### 🔹 Debugging - 디버깅 & 트러블슈팅
-
-<details>
-<summary><b>실전 문제 해결 가이드 (6개 챕터)</b></summary>
-
-|                         주제                          | 핵심 내용 |
-|:-----------------------------------------------------:|----------|
-|   **[01. Debugging Techniques](./debugging/01-Debugging-Techniques.md)**   | strace, nsenter, 컨테이너 진입 |
-| **[02. Log Analysis](./debugging/02-Log-Analysis.md)** | 로그 분석 기법 |
-| **[03. Network Debugging](./debugging/03-Network-Debugging.md)** | tcpdump, 네트워크 추적 |
-| **[04. Performance Issues](./debugging/04-Performance-Issues.md)** | 성능 병목 찾기 |
-| **[05. Common Problems](./debugging/05-Common-Problems.md)** | 자주 발생하는 문제들 |
-| **[06. Diagnostic Tools](./debugging/06-Diagnostic-Tools.md)** | 진단 도구 모음 |
-
-</details>
-
-### 🔹 Real World - 실전 프로젝트
-
-<details>
-<summary><b>실무 프로젝트 완전 구현 (7개 챕터)</b></summary>
-
-|                        주제                         | 핵심 내용 |
-|:---------------------------------------------------:|----------|
-|   **[01. Web Application](./real-world/01-Web-Application.md)**   | Full-stack 앱 Docker화 |
-| **[02. Database Setup](./real-world/02-Database-Setup.md)** | 데이터베이스 컨테이너화 |
-| **[03. Reverse Proxy](./real-world/03-Reverse-Proxy.md)** | Nginx/Traefik 설정 |
-| **[04. Monitoring Stack](./real-world/04-Monitoring-Stack.md)** | Prometheus + Grafana |
-| **[05. Log Aggregation](./real-world/05-Log-Aggregation.md)** | ELK/EFK 스택 구축 |
-| **[06. Backup System](./real-world/06-Backup-System.md)** | 자동 백업 시스템 |
-| **[07. Multi-Tier App](./real-world/07-Multi-Tier-App.md)** | 다층 아키텍처 구현 |
-
-</details>
-
-### 🔹 Kubernetes Bridge - K8s로의 전환
-
-<details>
-<summary><b>Docker에서 Kubernetes로 (4개 챕터)</b></summary>
-
-|                          주제                           | 핵심 내용 |
-|:-------------------------------------------------------:|----------|
-|   **[01. Docker to K8s](./kubernetes-bridge/01-Docker-to-K8s.md)**   | 개념 매핑, 차이점 이해 |
-| **[02. Pod Concepts](./kubernetes-bridge/02-Pod-Concepts.md)** | Pod vs 컨테이너 |
-| **[03. Deployment Patterns](./kubernetes-bridge/03-Deployment-Patterns.md)** | Deployment, StatefulSet |
-| **[04. Migration Guide](./kubernetes-bridge/04-Migration-Guide.md)** | 마이그레이션 전략 |
-
-</details>
-
----
-
-## 🗺️ 학습 로드맵
-
-### 🎯 목적별 학습 경로
-
-<details>
-<summary><b>📘 초급자 (Docker 입문)</b></summary>
+> 💡 각 섹션을 클릭하면 상세 문서 목록이 펼쳐집니다
 
 <br/>
 
-**Week 1-2: Docker 기초 이해**
+### 🔹 클래스 로딩 시스템 (Class Loading)
+
+> **핵심 질문:** `new MyClass()` 를 호출하기 전, JVM은 무엇을 하는가?
+
+<details>
+<summary><b>클래스가 JVM에 올라오는 전체 과정 (7개 문서)</b></summary>
+
+<br/>
+
+| 문서 | 다루는 내용 |
+|------|------------|
+| [ClassLoader Hierarchy](./class-loading/classloader-hierarchy.md) | Bootstrap / Extension / Application 계층과 Parent Delegation Model |
+| [Loading → Linking → Initializing](./class-loading/loading-linking-initializing.md) | 3단계 책임 분리, static 초기화 블록이 실행되는 정확한 시점 |
+| [Bytecode Verification](./class-loading/bytecode-verification.md) | JVM이 .class 파일을 어떻게 신뢰하는가, Verifier 동작 원리 |
+| [Symbolic Reference Resolution](./class-loading/symbolic-reference-resolution.md) | ConstantPool의 심볼릭 참조가 직접 참조로 변환되는 과정 |
+| [Class Unloading](./class-loading/class-unloading.md) | 클래스가 언로딩되는 조건, ClassLoader 누수와 메모리 누수 |
+| [Custom ClassLoader](./class-loading/custom-classloader.md) | `findClass()` vs `loadClass()`, 암호화된 클래스 런타임 복호화 |
+| [ClassLoader Isolation](./class-loading/classloader-isolation.md) | 같은 클래스명이 두 ClassLoader에서 로드되면 `==` 결과는? |
+
+</details>
+
+<br/>
+
+### 🔹 런타임 데이터 영역 (Runtime Data Areas)
+
+> **핵심 질문:** 내 객체는 JVM 메모리 어디에, 어떤 모습으로 존재하는가?
+
+<details>
+<summary><b>JVM이 메모리를 나누고 관리하는 방식 (7개 문서)</b></summary>
+
+<br/>
+
+| 문서 | 다루는 내용 |
+|------|------------|
+| [Heap Structure](./runtime-data-areas/heap-structure.md) | Eden / Survivor / Old Generation 물리적 구조, 객체 이동 조건 |
+| [TLAB (Thread-Local Allocation Buffer)](./runtime-data-areas/tlab-thread-local-allocation.md) | TLAB가 없으면 생기는 경합, 스레드별 Eden 파티셔닝 원리 |
+| [Stack And Frames](./runtime-data-areas/stack-and-frames.md) | Stack Frame 구조(LVA / Operand Stack / Frame Data), StackOverflowError 시점 |
+| [Method Area & Metaspace](./runtime-data-areas/method-area-metaspace.md) | PermGen이 사라진 이유, Metaspace OOM 시나리오 |
+| [Runtime Constant Pool](./runtime-data-areas/runtime-constant-pool.md) | 클래스 파일 상수풀 vs 런타임 상수풀, 문자열 리터럴의 위치 |
+| [Object Layout In Memory](./runtime-data-areas/object-layout-in-memory.md) | Object Header + Instance Data + Padding, JOL로 실측 |
+| [Off-Heap & Direct Memory](./runtime-data-areas/off-heap-direct-memory.md) | ByteBuffer, `sun.misc.Unsafe`, GC가 닿지 않는 메모리 |
+
+</details>
+
+<br/>
+
+### 🔹 바이트코드 (Bytecode)
+
+> **핵심 질문:** 내가 짠 Java 코드가 JVM의 언어로 어떻게 번역되는가?
+
+<details>
+<summary><b>Java 코드와 JVM 사이의 언어, 바이트코드 완전 분석 (7개 문서)</b></summary>
+
+<br/>
+
+| 문서 | 다루는 내용 |
+|------|------------|
+| [Class File Format](./bytecode/class-file-format.md) | `.class` 파일 바이너리 구조, magic number부터 attributes까지 |
+| [Bytecode Instruction Set](./bytecode/bytecode-instruction-set.md) | 200+ 명령어 카테고리 분류, 타입별 명령어 분리 이유 |
+| [Operand Stack Mechanism](./bytecode/operand-stack-mechanism.md) | 스택 기반 VM vs 레지스터 기반 VM, 명령어가 스택에 하는 일 |
+| [Method Invocation Instructions](./bytecode/method-invocation-instructions.md) | `invokevirtual` / `invokeinterface` / `invokespecial` / `invokestatic` 차이 |
+| [Exception Handling Bytecode](./bytecode/exception-handling-bytecode.md) | try-catch-finally가 bytecode에서 Exception Table로 변환되는 방식 |
+| [Lambda & InvokeDynamic](./bytecode/lambda-and-invokedynamic.md) | Lambda가 내부 클래스가 아닌 이유, `LambdaMetafactory` 동작 원리 |
+| [Bytecode Manipulation (ASM)](./bytecode/bytecode-manipulation-asm.md) | ASM으로 런타임에 바이트코드 조작, AOP 구현 원리 |
+
+</details>
+
+<br/>
+
+### 🔹 실행 엔진 (Execution Engine)
+
+> **핵심 질문:** JVM은 bytecode를 어떻게 "빠르게" 실행하는가?
+
+<details>
+<summary><b>Interpreter에서 JIT까지, 코드가 실행되는 방식의 진화 (7개 문서)</b></summary>
+
+<br/>
+
+| 문서 | 다루는 내용 |
+|------|------------|
+| [Interpreter Mechanism](./execution-engine/interpreter-mechanism.md) | Template Interpreter 구조, bytecode → 기계어 디스패치 테이블 |
+| [JIT Compilation Basics](./execution-engine/jit-compilation-basics.md) | Warm-up 임계값, 컴파일 대상 선정 기준 (`-XX:+PrintCompilation`) |
+| [Tiered Compilation](./execution-engine/tiered-compilation.md) | Level 0~4 전환 조건, C1 / C2 컴파일러 역할 분리 |
+| [JIT Optimizations](./execution-engine/jit-optimizations.md) | Inlining, Escape Analysis, Loop Unrolling, Dead Code Elimination |
+| [On-Stack Replacement (OSR)](./execution-engine/on-stack-replacement.md) | 이미 실행 중인 메서드를 JIT 버전으로 교체하는 메커니즘 |
+| [Deoptimization](./execution-engine/deoptimization.md) | Speculative Optimization 실패 시 Interpreter로 복귀하는 과정 |
+| [JVM Intrinsics](./execution-engine/intrinsics.md) | JVM이 특정 메서드를 CPU 명령어로 직접 대체하는 방식 |
+
+</details>
+
+<br/>
+
+### 🔹 가비지 컬렉션 (Garbage Collection)
+
+> **핵심 질문:** JVM은 어떻게 "죽은 객체"를 판단하고, 어떻게 제거하는가?
+
+<details>
+<summary><b>Serial GC부터 ZGC까지, GC 알고리즘의 진화와 원리 (11개 문서)</b></summary>
+
+<br/>
+
+| 문서 | 다루는 내용 |
+|------|------------|
+| [GC Roots & Reachability](./garbage-collection/gc-roots-and-reachability.md) | GC Root 종류, 순환 참조가 왜 문제가 안 되는가 |
+| [Reference Types](./garbage-collection/reference-types.md) | Strong / Soft / Weak / Phantom Reference별 GC 동작, `WeakHashMap` |
+| [Mark-Sweep-Compact](./garbage-collection/mark-sweep-compact.md) | 3단계 알고리즘, Fragmentation 문제와 Compaction 비용 |
+| [Generational Hypothesis](./garbage-collection/generational-hypothesis.md) | "대부분의 객체는 젊어서 죽는다"는 가설이 GC 설계에 미친 영향 |
+| [Serial & Parallel GC](./garbage-collection/serial-parallel-gc.md) | 단순 GC 동작 원리, Stop-The-World 비용 |
+| [CMS GC & Problems](./garbage-collection/cms-gc-and-problems.md) | Concurrent Mark의 혁신과 Concurrent Mode Failure 한계, G1 탄생 배경 |
+| [G1 GC Deep Dive](./garbage-collection/g1-gc-deep-dive.md) | Region 기반 구조, Concurrent Marking → Evacuation, Pause Prediction Model |
+| [ZGC Deep Dive](./garbage-collection/zgc-deep-dive.md) | Colored Pointer, Load Barrier, Concurrent Relocation — pause < 1ms 원리 |
+| [Shenandoah GC](./garbage-collection/shenandoah-gc.md) | Brooks Pointer, ZGC와의 설계 철학 차이 |
+| [GC Tuning Flags](./garbage-collection/gc-tuning-flags.md) | 실전에서 쓰는 JVM 플래그 완전 정리 |
+| [GC Log Analysis](./garbage-collection/gc-log-analysis.md) | `-Xlog:gc*` 로그 해석, STW 시간 측정, 메모리 누수 탐지 |
+
+</details>
+
+<br/>
+
+### 🔹 자바 메모리 모델 (Java Memory Model)
+
+> **핵심 질문:** 멀티코어 CPU에서 Java 코드는 왜 예상과 다르게 동작하는가?
+
+<details>
+<summary><b>CPU 캐시부터 Happens-Before까지, 동시성의 근본 (7개 문서)</b></summary>
+
+<br/>
+
+| 문서 | 다루는 내용 |
+|------|------------|
+| [CPU Cache & Visibility Problem](./java-memory-model/cpu-cache-and-visibility-problem.md) | 캐시 계층 구조, 명령어 재정렬, JMM이 이 모든 것을 추상화하는 이유 |
+| [Happens-Before](./java-memory-model/happens-before.md) | HB 규칙 8가지, "실행 순서"와 "가시성 보장 순서"가 다른 이유 |
+| [Volatile Deep Dive](./java-memory-model/volatile-deep-dive.md) | volatile이 보장하는 것(가시성 + 재정렬 금지)과 보장 안 하는 것(원자성) |
+| [Final Field Semantics](./java-memory-model/final-field-semantics.md) | 생성자 완료 후 final 필드가 보장되는 범위, 안전한 불변 객체 공개 |
+| [Publication & Escape](./java-memory-model/publication-and-escape.md) | 객체가 "탈출"하는 경우, 안전한 공개(Safe Publication) 패턴 |
+| [Synchronized Internals](./java-memory-model/synchronized-internals.md) | synchronized가 삽입하는 Memory Barrier, 모니터 락의 메모리 의미론 |
+| [Memory Barriers](./java-memory-model/memory-barriers.md) | LoadLoad / StoreStore / LoadStore / StoreLoad 배리어와 CPU 명령어 |
+
+</details>
+
+<br/>
+
+### 🔹 동시성 내부 구조 (Concurrency Internals)
+
+> **핵심 질문:** `synchronized`와 `ReentrantLock`은 내부에서 어떻게 다른가?
+
+<details>
+<summary><b>Lock 메커니즘과 스레드 스케줄링의 실제 구현 (9개 문서)</b></summary>
+
+<br/>
+
+| 문서 | 다루는 내용 |
+|------|------------|
+| [Object Monitor](./concurrency-internals/object-monitor.md) | Monitor 구조, Entry Set / Wait Set, `wait()` / `notify()` 내부 동작 |
+| [Lock: Biased → Thin → Fat](./concurrency-internals/lock-biased-thin-fat.md) | Mark Word 변화로 보는 Lock 상태 전이, Biased Lock deprecated 이유 |
+| [CAS & Atomic Operations](./concurrency-internals/cas-and-atomic-operations.md) | CPU의 `CMPXCHG` 명령어, ABA 문제, AtomicInteger 내부 구현 |
+| [False Sharing & Cache Line](./concurrency-internals/false-sharing-and-cache-line.md) | 64바이트 캐시라인, `@Contended`, JMH로 False Sharing 실측 |
+| [AQS Internals](./concurrency-internals/aqs-internals.md) | CLH Queue, `ReentrantLock` / `Semaphore` / `CountDownLatch` 공통 기반 |
+| [Thread States & Scheduler](./concurrency-internals/thread-states-and-scheduler.md) | OS 스레드 상태 vs JVM 스레드 상태, Context Switching 비용 |
+| [ThreadLocal Internals](./concurrency-internals/thread-local-internals.md) | `ThreadLocalMap` 내부 구조, 메모리 누수 발생 조건 |
+| [Virtual Threads (Project Loom)](./concurrency-internals/virtual-threads-loom.md) | Carrier Thread, Structured Concurrency, pinning 주의사항 |
+| [Safepoint Mechanism](./concurrency-internals/safepoint-mechanism.md) | Safepoint가 필요한 이유, Time-To-Safepoint 지연 원인과 분석 |
+
+</details>
+
+<br/>
+
+### 🔹 성능 튜닝 (Performance Tuning)
+
+> **핵심 질문:** JVM을 어떻게 측정하고, 어떻게 최적화하는가?
+
+<details>
+<summary><b>JFR, async-profiler, JMH로 JVM을 실측하고 개선하는 방법 (7개 문서)</b></summary>
+
+<br/>
+
+| 문서 | 다루는 내용 |
+|------|------------|
+| [JVM Flags Complete Guide](./performance-tuning/jvm-flags-complete-guide.md) | 실전에서 쓰는 플래그 전체 정리 (`-Xms`, `-Xmx`, `-XX:*`) |
+| [Heap Sizing Strategy](./performance-tuning/heap-sizing-strategy.md) | Initial / Max Heap 비율, Young/Old 비율, 컨테이너 환경 주의사항 |
+| [GC Ergonomics](./performance-tuning/gc-ergonomics.md) | JVM이 스스로 GC와 힙 크기를 조정하는 자동 튜닝 원리 |
+| [Profiling with JFR](./performance-tuning/profiling-with-jfr.md) | Java Flight Recorder + JDK Mission Control, Flame Graph 읽기 |
+| [Profiling with async-profiler](./performance-tuning/profiling-with-async-profiler.md) | CPU / 메모리 / 락 프로파일링, `alloc` 모드로 GC 압박 찾기 |
+| [Memory Leak Analysis](./performance-tuning/memory-leak-analysis.md) | Heap Dump 분석, 누수 패턴 (static, ThreadLocal, ClassLoader) |
+| [Benchmarking with JMH](./performance-tuning/benchmarking-with-jmh.md) | 왜 `System.nanoTime()`은 부정확한가, Warm-up / Blackhole / @State |
+
+</details>
+
+<br/>
+
+### 🔹 JVM 내부 심화 (Advanced Internals)
+
+> **핵심 질문:** JVM이 숨기고 있는 더 깊은 층에는 무엇이 있는가?
+
+<details>
+<summary><b>Mark Word, Compressed Oops, Java Agent까지 — JVM의 가장 깊은 곳 (7개 문서)</b></summary>
+
+<br/>
+
+| 문서 | 다루는 내용 |
+|------|------------|
+| [Object Header & Mark Word](./advanced-internals/object-header-and-mark-word.md) | 64비트 Mark Word 레이아웃, 해시코드 / Lock 상태 / GC 나이 필드 |
+| [Compressed Oops](./advanced-internals/compressed-oops.md) | 64비트 JVM에서 포인터를 32비트로 압축하는 원리, 32GB 힙 제한 이유 |
+| [String Pool & Interning](./advanced-internals/string-pool-interning.md) | 문자열 상수풀 위치 변화 (PermGen → Heap), `intern()` 비용 |
+| [Unsafe API](./advanced-internals/unsafe-api.md) | `sun.misc.Unsafe`로 직접 메모리 조작, JDK 내부 코드가 쓰는 이유 |
+| [Reflection & Performance](./advanced-internals/reflection-and-performance.md) | Reflection 호출 경로, 15회 임계값 후 바이트코드 생성, JIT와의 관계 |
+| [Instrumentation & Java Agent](./advanced-internals/instrumentation-and-agent.md) | `-javaagent` 동작 원리, `ClassFileTransformer`로 클래스 변환 |
+| [JNI Internals](./advanced-internals/jni-internals.md) | JVM ↔ Native 코드 경계, JNI 호출 비용, Global / Local Reference |
+
+</details>
+
+---
+
+## 🗺️ 목적별 학습 경로
+
+<details>
+<summary><b>🟢 Java 개발을 시작하는 분 / 기술 면접 준비 (3~4주)</b></summary>
+
+<br/>
+
+**Week 1 — JVM 메모리 구조 확립**
 ```
-✅ Fundamentals 01-03
-   ├─ Container vs VM
-   ├─ Docker Architecture
-   └─ Image Layers
-
-✅ Images 01-02
-   ├─ Dockerfile Best Practices
-   └─ Multi-Stage Builds
-
-목표: Docker가 무엇인지, 왜 사용하는지 이해
+heap-structure
+stack-and-frames
+object-layout-in-memory
+method-area-metaspace
 ```
 
-**Week 3-4: 실전 사용**
+**Week 2 — GC 원리 이해**
 ```
-✅ Networking 01-02
-   ├─ Network Fundamentals
-   └─ Bridge Network
-
-✅ Storage 01-02
-   ├─ Volume Types
-   └─ Bind Mounts
-
-✅ Orchestration 01
-   └─ Docker Compose
-
-목표: 실제 애플리케이션을 Docker로 실행
+gc-roots-and-reachability
+generational-hypothesis
+g1-gc-deep-dive
+gc-log-analysis
 ```
 
-**Week 5-6: 프로젝트 실습**
+**Week 3 — 동시성과 JMM**
 ```
-✅ Real World 01-03
-   ├─ Web Application
-   ├─ Database Setup
-   └─ Reverse Proxy
+cpu-cache-and-visibility-problem
+happens-before
+volatile-deep-dive
+lock-biased-thin-fat
+```
 
-목표: 간단한 웹 앱을 Docker로 완전 배포
+**Week 4 — 실전 튜닝**
+```
+jvm-flags-complete-guide
+heap-sizing-strategy
+benchmarking-with-jmh
 ```
 
 </details>
 
 <details>
-<summary><b>💼 중급자 (실무 활용)</b></summary>
+<summary><b>🔵 Java 코드를 원리로 이해하고 싶은 개발자 (6~8주)</b></summary>
 
 <br/>
 
-**Month 1: 심화 이론**
 ```
-✅ Fundamentals 전체 (01-07)
-✅ Images 전체 (01-07)
-✅ Networking 01-06
-
-목표: Docker 내부 동작 원리 완전 이해
-```
-
-**Month 2: 보안 & 성능**
-```
-✅ Security 01-06
-✅ Performance 01-06
-✅ Debugging 01-04
-
-목표: 프로덕션 준비 완료
-```
-
-**Month 3: 자동화 & 오케스트레이션**
-```
-✅ CI/CD 전체
-✅ Orchestration 전체
-✅ Patterns 01-06
-
-목표: CI/CD 파이프라인 구축
+class-loading 전체
+→ runtime-data-areas 전체
+→ bytecode 전체 (javap로 직접 분석)
+→ execution-engine 전체 (JIT 동작 실측)
+→ garbage-collection 전체
 ```
 
 </details>
 
 <details>
-<summary><b>🏆 고급자 (아키텍트 레벨)</b></summary>
+<summary><b>🔴 JVM 마스터 목표 (3~4개월)</b></summary>
 
 <br/>
 
-**Phase 1: 전체 복습 (2주)**
 ```
-✅ Fundamentals 전체 재학습
-✅ 핵심 개념 정리
-```
-
-**Phase 2: 고급 주제 (1개월)**
-```
-✅ Advanced 전체 (01-08)
-✅ Performance 전체
-✅ Security 전체
-```
-
-**Phase 3: 실전 적용 (1개월)**
-```
-✅ Real World 전체
-✅ Patterns 전체
-✅ Kubernetes Bridge 전체
-```
-
-**Phase 4: 커스터마이징 (진행형)**
-```
-✅ Custom Plugins 개발
-✅ 자체 모니터링 시스템 구축
-✅ 오픈소스 기여
-```
-
-</details>
-
-<details>
-<summary><b>⚡ 빠른 복습 (경력 개발자)</b></summary>
-
-<br/>
-
-**Day 1: Core Concepts**
-```
-□ Fundamentals 01-04 (4시간)
-□ Images 01-03 (2시간)
-```
-
-**Day 2: Networking & Security**
-```
-□ Networking 01-03 (3시간)
-□ Security 01-04 (3시간)
-```
-
-**Day 3: Advanced & Patterns**
-```
-□ Advanced 01-04 (3시간)
-□ Patterns 01-05 (3시간)
+전체 순서대로 + code/ 예제 직접 실행
+→ advanced-internals 챕터로 마무리
+→ JFR + async-profiler로 실제 프로젝트 분석
 ```
 
 </details>
 
 ---
 
-## 🎓 학습 방법
+## 📖 각 문서 구성 방식
 
-```
-📖 Read → 💻 Practice → 🤔 Think → 📝 Review → 🔁 Repeat
-```
-
-### 1️⃣ 기초부터 차근차근
-```
-Fundamentals (필수) 
-→ Images (이미지 최적화)
-→ Networking (네트워크 이해)
-→ Storage (데이터 관리)
-→ Security (보안 강화)
-```
-
-### 2️⃣ 실습 중심 학습
-```
-1. 문서 읽기 (개념 이해)
-2. 명령어 직접 실행 (체득)
-3. 결과 분석 (원리 파악)
-4. 변형 실험 (응용력 향상)
-```
-
-### 3️⃣ 프로젝트 기반 학습
-```
-이론 학습 → Real World 프로젝트 → 실제 적용
-예: Fundamentals 학습 후 → Web Application 프로젝트 구현
-```
-
----
-
-## 📖 문서 구조
-
-각 문서는 다음과 같은 구조로 구성됩니다:
+모든 문서는 동일한 구조로 작성됩니다.
 
 | 섹션 | 설명 |
 |------|------|
-| 🎯 **학습 목표** | 이 챕터에서 배울 핵심 내용 |
-| 📌 **왜 중요한가** | 실무에서의 중요성과 적용 사례 |
-| 🔬 **Deep Dive** | 내부 동작 원리 상세 설명 |
-| 💻 **실습** | 직접 실행 가능한 예제 |
-| 🔥 **실전 적용** | 프로덕션 시나리오 |
-| ⚡ **최적화** | 성능/보안 개선 팁 |
-| 🚫 **안티패턴** | 피해야 할 실수들 |
-| 🎓 **핵심 정리** | 빠른 복습용 요약 |
+| 🎯 **핵심 질문** | 이 문서를 읽고 나면 답할 수 있는 질문 |
+| 🔍 **왜 이게 존재하는가** | 문제 상황과 설계 배경 |
+| 📐 **내부 구조** | 원리 + 다이어그램 |
+| 💻 **실험으로 확인하기** | 직접 실행 가능한 코드 + 예상 결과 + 측정 도구 |
+| ⚡ **실무 임팩트** | 이 지식이 실제 코드 작성 / 장애 대응에 어떤 영향을 주는가 |
+| 🚫 **흔한 오해** | 잘못 알려진 내용 교정 |
+| 📌 **핵심 정리** | 한 화면 요약 |
 
 ---
 
-## 💡 학습 팁
+## 🙏 Reference
 
-### ✅ 효과적인 학습 전략
-
-1. **순서대로 학습**
-   - Fundamentals는 반드시 순서대로
-   - 다른 섹션은 필요에 따라 선택
-
-2. **실습 필수**
-   - 모든 명령어를 직접 실행
-   - 결과를 눈으로 확인
-   - 변형해서 실험
-
-3. **메모하기**
-   - 이해 안 되는 부분 표시
-   - 나중에 다시 학습
-   - 자신만의 정리 노트 작성
-
-4. **프로젝트 적용**
-   - 학습한 내용을 실제 프로젝트에 적용
-   - 문제 발생 시 Debugging 섹션 참고
-
-### ⚠️ 주의사항
-
-```
-❌ 단순 암기
-✅ 원리 이해
-
-❌ 명령어만 복사
-✅ 왜 그렇게 동작하는지 이해
-
-❌ 건너뛰기
-✅ Fundamentals는 필수
-
-❌ 이론만
-✅ 반드시 실습 병행
-```
-
----
-
-## 🔧 실습 환경 구성
-
-### 최소 요구사항
-
-```bash
-# OS: Linux (Ubuntu 22.04 권장)
-# CPU: 2 cores
-# RAM: 4GB
-# Disk: 20GB
-
-# Docker 설치
-curl -fsSL https://get.docker.com -o get-docker.sh
-sudo sh get-docker.sh
-
-# 사용자 권한 추가
-sudo usermod -aG docker $USER
-newgrp docker
-
-# 확인
-docker --version
-docker run hello-world
-```
-
-### 권장 환경
-
-```bash
-# OS: Linux (Ubuntu 22.04+)
-# CPU: 4+ cores
-# RAM: 8GB+
-# Disk: 50GB+
-
-# Docker Compose 설치
-sudo apt-get update
-sudo apt-get install docker-compose-plugin
-
-# 확인
-docker compose version
-```
-
----
-
-## 🤝 기여하기
-
-더 좋은 예제나 설명이 있다면 언제든 환영합니다!
-
-```bash
-# 1. Fork the repository
-# 2. Create your feature branch
-git checkout -b feature/AmazingContent
-
-# 3. Commit your changes
-git commit -m 'Add amazing Docker content'
-
-# 4. Push to the branch
-git push origin feature/AmazingContent
-
-# 5. Open a Pull Request
-```
-
-### 기여 가이드라인
-
-- ✅ 실행 가능한 예제 코드
-- ✅ 명확한 설명과 주석
-- ✅ Before/After 비교
-- ✅ 실전 시나리오 포함
-- ✅ 성능 측정 결과 (가능한 경우)
-
----
-
-## 📚 추천 학습 순서
-
-### 🥇 1단계: 필수 기초 (2-4주)
-```
-Fundamentals → Images → Networking
-```
-
-### 🥈 2단계: 실전 적용 (2-4주)
-```
-Storage → Orchestration → Real World
-```
-
-### 🥉 3단계: 심화 학습 (1-2개월)
-```
-Security → Performance → Advanced
-```
-
-### 🏆 4단계: 마스터 (진행형)
-```
-모든 섹션 완료 → 프로덕션 적용 → 오픈소스 기여
-```
-
----
-
-## 🙏 Reference & Resources
-
-### 📚 공식 문서
-- [Docker Documentation](https://docs.docker.com/)
-- [Docker Hub](https://hub.docker.com/)
-- [containerd](https://containerd.io/)
-- [OCI Specification](https://opencontainers.org/)
-
-### 🎓 추가 학습 자료
-- [Docker Curriculum](https://docker-curriculum.com/)
-- [Docker Labs](https://github.com/docker/labs)
-
-### 🛠️ 유용한 도구
-- [Dive](https://github.com/wagoodman/dive) - 이미지 레이어 분석
-- [Hadolint](https://github.com/hadolint/hadolint) - Dockerfile 린터
-- [Trivy](https://github.com/aquasecurity/trivy) - 취약점 스캐너
-- [Portainer](https://www.portainer.io/) - Docker GUI
-
----
-
-## ✨ Dev Book Lab
-
-<div align="center">
-
-**AI와 함께 개발 서적을 분석하고 정리하는 연구소**
-
-[📂 다른 프로젝트 보기](https://github.com/dev-book-lab)
-
-</div>
+- [Java Virtual Machine Specification (JVMS)](https://docs.oracle.com/javase/specs/jvms/se21/html/index.html)
+- [Inside the Java Virtual Machine — Bill Venners](https://www.artima.com/insidejvm/ed2/)
+- [The Garbage Collection Handbook — Richard Jones](https://gchandbook.org/)
+- [JEP Index](https://openjdk.org/jeps/0)
+- [OpenJDK Source Code](https://github.com/openjdk/jdk)
 
 ---
 
@@ -653,10 +371,10 @@ Security → Performance → Advanced
 
 **⭐️ 도움이 되셨다면 Star를 눌러주세요!**
 
-Made with ❤️ by Dev Book Lab
+Made with ❤️ by [Dev Book Lab](https://github.com/dev-book-lab)
 
 <br/>
 
-*"컨테이너를 실행하는 것을 넘어, Docker가 실제로 어떻게 동작하는지 완전히 이해하기"*
+*"Java 코드를 작성하는 것과, Java 코드가 어떻게 살아 움직이는지 아는 것은 다르다"*
 
 </div>
